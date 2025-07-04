@@ -5,6 +5,7 @@ import 'nextra-theme-docs/style.css'
 import "./globals.css";
 import { Banner } from "nextra/components";
 import { getPageMap } from 'nextra/page-map'
+import { SignIn } from "@/features";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,10 @@ const banner = <Banner storageKey="some-key">Alien SSO v1.0.0 coming soon!</Bann
 const navbar = (
   <Navbar
     logo={<b>Alien</b>}
-  />
+    projectLink={'https://github.com/shuding/nextra/tree/main/docs'}
+  >
+    <SignIn />
+  </Navbar>
 )
 
 const footer = <Footer>MIT {new Date().getFullYear()} © Alien</Footer>

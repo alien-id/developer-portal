@@ -1,7 +1,7 @@
 import cn from 'clsx'
 import Link from 'next/link'
 import type { ComponentProps, FC, ReactNode } from 'react'
-import { MotionDiv } from '../framer-motion'
+import { MotionDiv } from '@/components/framer-motion'
 import styles from './style.module.css'
 
 export const Feature: FC<
