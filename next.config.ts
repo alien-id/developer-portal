@@ -8,6 +8,7 @@ const withNextra = nextra({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  reactStrictMode: false
 };
 
 export default withNextra(nextConfig)

@@ -2,8 +2,8 @@ import { AlienSsoSdkServer } from 'alien-sso-sdk-server-js';
 import { NextRequest, NextResponse } from 'next/server'
 
 const alienSsoSdkServer = new AlienSsoSdkServer({
-    providerAddress: '00000001000000000000000000000000',
-    providerPrivateKey: 'c366d7b8eb1396a486d6a8f8ed1ae5a94b9923264e827e9e33aa6d4b702cf17704f08f419f2d22cd3e03a33383f4d94dbacd73705efb22ba82766762942f79c1',
+    providerAddress: '00000001000000000000000600000000',
+    providerPrivateKey: '59ebc17cd2d7e311a937d05b7fdaeecd4e34ce5a86f165a6c6e95b4cd6074455dcec420424ece545026924887022486c6ba39a552da525a828ba15e07725a5d0',
     ssoBaseUrl: 'https://sso.alien-api.com',
 });
 

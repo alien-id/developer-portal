@@ -3,6 +3,14 @@ export default {
     type: 'page',
     display: 'hidden'
   },
+  dashboard: {
+    type: 'page',
+    display: 'hidden'
+  },
+  login: {
+    type: 'page',
+    display: 'hidden'
+  },
   docs: {
     type: 'page',
     title: 'Documentation',
