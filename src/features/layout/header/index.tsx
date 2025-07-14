@@ -16,13 +16,13 @@ const Header: FC = () => {
                     <Logo1xWhiteSvg />
                 </div>
 
-                <div className="flex flex-row items-center gap-3 justify-center text-text-tertiary">
+                <div className="flex flex-row items-center gap-3 justify-center text-sm text-text-tertiary leading-tight">
                     <Lock16Svg />
                     Secured by Alien
                 </div>
 
                 <div className="flex flex-row items-center gap-3 justify-end">
-                    <Link href={'/docs'}>
+                    <Link href={'/docs'} className="text-white text-xs leading-none">
                         Documentation
                     </Link>
 

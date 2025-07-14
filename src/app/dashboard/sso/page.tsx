@@ -1,155 +1,151 @@
 'use client';
 
-import { AppSidebar } from "@/components/app-sidebar";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { geistMono } from "@/fonts";
 
-type Provider = {
-    providerAddress: string;
-    providerPrivateKey: string;
-}
+import Link16Svg from '@/icons/link-16.svg';
 
-const installCommands1 = {
-    nodejs: "npm install @alien/sso-sdk-client-js",
-}
-
-const installCommands2 = {
-    nodejs: "npm install @alien/sso-sdk-server-js",
-}
-
-const DashboardPage = () => {
-    const [provider, setProvider] = useState<Provider | null>(null);
-    const [copiedField, setCopiedField] = useState<string | null>(null)
-
-    const handleCreateProvider = () => {
-        setProvider({
-            providerAddress: process.env.NEXT_PUBLIC_PROVIDER_ADDRESS || '',
-            providerPrivateKey: process.env.NEXT_PUBLIC_PROVIDER_PRIVATE_KEY || ''
-        })
-    }
-
-    const copyToClipboard = async (text: string, field: string) => {
-        try {
-            await navigator.clipboard.writeText(text)
-            setCopiedField(field)
-            setTimeout(() => setCopiedField(null), 3000)
-        } catch (err) {
-            console.error("Failed to copy text: ", err)
-        }
-    }
+const DashboardSsoPage = () => {
 
     return (
-        <div className="flex flex-1 flex-col gap-4 p-4">
-            {!provider ? (
-                <>
-                    <p className="text-xl font-semibold">
-                        You don't have any providers yet. Let's create one!
-                    </p>
+        <div className="w-full h-full rounded-[40px] border border-stroke-default px-[110px] py-[36px]">
+            <h2 className="text-text-primary text-xl mb-2">
+                Introduction
+            </h2>
 
-                    <Button onClick={handleCreateProvider} className="w-fit">
-                        Create Provider
-                    </Button>
-                </>
-            ) : (
-                <>
-                    <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-gray-100">
-                            Copy the staging environment variables to your app
-                        </h2>
+            <p className="text-text-secondary text-sm font-normal mb-4">
+                Before creating your first integration, here’s a quick overview of the initial steps. This helps you understand what’s coming next.
+            </p>
 
-                        <div className="space-y-4">
-                            {Object.entries(provider).map(([key, value], index) => (
-                                <div key={index} className="space-y-2">
-                                    <div className="flex items-center justify-between">
-                                        <code className="text-sm font-mono text-gray-300">{key}</code>
-                                    </div>
-
-                                    <div className="relative">
-                                        <div className="bg-gray-700 border border-gray-700 rounded-md p-3 pr-12">
-                                            <code className="text-sm font-mono text-gray-200 break-all">{value}</code>
-                                        </div>
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-700"
-                                            onClick={() => copyToClipboard(value, key)}
-                                        >
-                                            {copiedField === key ? (
-                                                <Check className="h-4 w-4 text-green-400" />
-                                            ) : (
-                                                <Copy className="h-4 w-4 text-gray-400" />
-                                            )}
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
+            <div className="flex flex-col gap-1">
+                <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
+                    <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            1
                         </div>
                     </div>
 
-                    <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-gray-100">Install the Alien SSO SDKs to your project</h2>
-
-                        <div className="space-y-4">
-                            <div className="relative">
-                                <div className="bg-gray-800 border border-gray-700 rounded-md p-3 pr-12">
-                                    <code className="text-sm font-mono text-gray-200">
-                                        {installCommands1['nodejs' as keyof typeof installCommands1]}
-                                    </code>
+                    <div className="w-96 inline-flex flex-col  items-start gap-4">
+                        <div className="flex flex-col  items-start gap-1">
+                            <div className="flex flex-col  items-start gap-1">
+                                <div className=" text-text-primary text-sm leading-tight mb-1">
+                                    Create a new provider
                                 </div>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-700"
-                                    onClick={() =>
-                                        copyToClipboard(
-                                            installCommands1['nodejs' as keyof typeof installCommands1],
-                                            "install-command",
-                                        )
-                                    }
-                                >
-                                    {copiedField === "install-command" ? (
-                                        <Check className="h-4 w-4 text-green-400" />
-                                    ) : (
-                                        <Copy className="h-4 w-4 text-gray-400" />
-                                    )}
-                                </Button>
+
+                                <div className="text-text-secondary text-sm font-normal leading-tight">
+                                    To start, you’ll need to create a new provider that defines your product.
+                                    <br />
+                                    <br />
+                                    Once created, you’ll receive a private key and a private address — both are required to securely initialize your SSO integration. Store them safely: they act as credentials for your provider.
+                                </div>
                             </div>
                         </div>
 
-                        <div className="space-y-4">
-                            <div className="relative">
-                                <div className="bg-gray-800 border border-gray-700 rounded-md p-3 pr-12">
-                                    <code className="text-sm font-mono text-gray-200">
-                                        {installCommands2['nodejs' as keyof typeof installCommands2]}
-                                    </code>
-                                </div>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-700"
-                                    onClick={() =>
-                                        copyToClipboard(
-                                            installCommands2['nodejs' as keyof typeof installCommands2],
-                                            "install-command",
-                                        )
-                                    }
-                                >
-                                    {copiedField === "install-command" ? (
-                                        <Check className="h-4 w-4 text-green-400" />
-                                    ) : (
-                                        <Copy className="h-4 w-4 text-gray-400" />
-                                    )}
-                                </Button>
+                        <div className="px-4 py-2 bg-zinc-900 rounded-[36px] shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] border border-offset-[-0.50px] border-white flex justify-center items-center gap-2">
+                            <div className="text-center justify-center text-text-primary text-base leading-snug">
+                                Create a provider
                             </div>
                         </div>
                     </div>
-                </>
-            )}
+                </div>
+
+                <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
+                    <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            2
+                        </div>
+                    </div>
+
+                    <div className="w-96 inline-flex flex-col  items-start gap-4">
+                        <div className="flex flex-col  items-start gap-1">
+                            <div className="flex flex-col  items-start gap-1">
+                                <div className=" text-text-primary text-sm leading-tight mb-1">
+                                    Install the SDKs
+                                </div>
+
+                                <div className="text-text-secondary text-sm font-normal leading-tight">
+                                    Next, you’ll install two SDK packages — one for the client, and one for the server. These packages handle the full SSO flow between your platform and ours.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
+                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${geistMono.className}`}>
+                                npm install @alien/sso-sdk-client-js
+                            </div>
+
+                            <div className="w-4 h-4 relative overflow-hidden">
+                                <div className="w-4 h-4 left-0 top-0 absolute overflow-hidden"></div>
+                            </div>
+                        </div>
+
+                        <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
+                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${geistMono.className}`}>
+                                npm install @alien/sso-sdk-server-js
+                            </div>
+
+                            <div className="w-4 h-4 relative overflow-hidden">
+                                <div className="w-4 h-4 left-0 top-0 absolute overflow-hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
+                    <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            3
+                        </div>
+                    </div>
+
+                    <div className="w-96 inline-flex flex-col  items-start gap-4">
+                        <div className="flex flex-col  items-start gap-1">
+                            <div className="flex flex-col  items-start gap-1">
+                                <div className=" text-text-primary text-sm leading-tight mb-1">
+                                    Finish client setup & customization
+                                </div>
+
+                                <div className="text-text-secondary text-sm font-normal leading-tight">
+                                    In the final step, you’ll initialize the client and complete a few remaining settings.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row flex-wrap gap-2">
+
+                            <div className="inline-flex justify-start items-center gap-[3px]">
+                                <div className="border-b border-white/20 flex justify-center items-center gap-2.5">
+                                    <div className="justify-start text-white text-xs leading-none">Usage example</div>
+                                </div>
+                                <div className="w-4 h-4 relative overflow-hidden">
+                                    <Link16Svg />
+                                </div>
+                            </div>
+
+                            <div className="inline-flex justify-start items-center gap-[3px]">
+                                <div className="border-b border-white/20 flex justify-center items-center gap-2.5">
+                                    <div className="justify-start text-white text-xs leading-none">Integrating the sign-in button</div>
+                                </div>
+                                <div className="w-4 h-4 relative overflow-hidden">
+                                    <Link16Svg />
+
+                                </div>
+                            </div>
+
+                            <div className="inline-flex justify-start items-center gap-[3px]">
+                                <div className="border-b border-white/20 flex justify-center items-center gap-2.5">
+                                    <div className="justify-start text-white text-xs leading-none">API Reference</div>
+                                </div>
+                                <div className="w-4 h-4 relative overflow-hidden">
+                                    <Link16Svg />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div >
     )
 }
 
-export default DashboardPage
+export default DashboardSsoPage
+

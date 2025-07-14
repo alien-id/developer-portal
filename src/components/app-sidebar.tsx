@@ -14,7 +14,7 @@ import {
 const data = {
   navMain: [
     {
-      title: "SDKs",
+      title: "Menu",
       url: "#",
       items: [
         {

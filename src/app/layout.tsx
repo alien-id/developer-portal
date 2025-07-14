@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from 'next-themes'
-import "./globals.css";
 import { PropsWithChildren } from "react";
+import { geist, geistMono } from "@/fonts";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Developer Portal | Alien",
@@ -28,7 +19,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       data-theme="dark"
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg-primary text-text-primary`}
+        className={`${geist.variable} ${geistMono.variable} antialiased bg-bg-primary text-text-primary`}
       >
         <ThemeProvider attribute="data-theme">
           {children}
