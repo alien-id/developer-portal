@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useAuthStatus } from "../require-auth-checker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-function SignIn() {
+function AuthState() {
     const { status } = useAuthStatus();
 
     if (status === 'unauthenticated') return (
         <Button asChild variant={'outline'}>
-            <Link href={'/login'}>
+            <Link href={'/sign-in'}>
                 Sign In
             </Link>
         </Button>
@@ -26,4 +26,4 @@ function SignIn() {
     )
 }
 
-export default SignIn;
+export default AuthState;

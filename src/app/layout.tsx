@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Footer, Layout, Navbar } from 'nextra-theme-docs'
-import 'nextra-theme-docs/style.css'
+import { ThemeProvider } from 'next-themes'
 import "./globals.css";
-import { Banner } from "nextra/components";
-import { getPageMap } from 'nextra/page-map'
-import { SignIn } from "@/features";
+import { PropsWithChildren } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,44 +19,20 @@ export const metadata: Metadata = {
   description: "Developer Portal | Alien",
 };
 
-const banner = <Banner storageKey="some-key">Alien SSO v1.0.0 coming soon!</Banner>
-
-const navbar = (
-  <Navbar
-    logo={<b>Alien</b>}
-    projectLink={'https://github.com/shuding/nextra/tree/main/docs'}
-  >
-    <SignIn />
-  </Navbar>
-)
-
-const footer = <Footer>MIT {new Date().getFullYear()} © Alien</Footer>
-
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html
       lang="en"
       dir="ltr"
       suppressHydrationWarning
+      data-theme="dark"
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg-primary text-text-primary`}
       >
-        <Layout
-          banner={banner}
-          navbar={navbar}
-          pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
-          editLink="Edit this page on GitHub"
-          sidebar={{ defaultMenuCollapseLevel: 1 }}
-          footer={footer}
-        >
+        <ThemeProvider attribute="data-theme">
           {children}
-        </Layout>
+        </ThemeProvider>
       </body>
     </html>
   );
