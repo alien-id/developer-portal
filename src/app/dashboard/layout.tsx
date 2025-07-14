@@ -19,13 +19,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                         <Link href={"/dashboard/sso"} className="text-text-primary text-sm leading-tight font-booton">
                             Alien SSO
                         </Link>
-
-                        {/* <Link href={"/dashboard"} className="text-text-primary text-sm leading-tight">
-                            Mini-Apps
-                        </Link> */}
                     </nav>
                 </aside>
-
 
                 {children}
 
