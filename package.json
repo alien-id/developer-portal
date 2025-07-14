@@ -22,6 +22,7 @@
     "alien-sso-sdk-client-js": "file:./alien-sso-sdk-client-js-1.0.0.tgz",
     "alien-sso-sdk-server-js": "file:./alien-sso-sdk-server-js-1.0.0.tgz",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.20.0",
@@ -36,6 +37,8 @@
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
     "react-qr-code": "^2.0.17",
+    "sonner": "^2.0.6",
+    "swr": "^2.3.4",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.0.0"
   },

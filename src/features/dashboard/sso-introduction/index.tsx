@@ -44,14 +44,6 @@ const SsoIntroduction = () => {
                             </div>
                         </div>
 
-                        {/* <button onClick={handleCreateProvider}>
-                            <div className="px-4 py-2 bg-zinc-900 rounded-[36px] shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] border border-offset-[-0.50px] border-white flex justify-center items-center gap-2">
-                                <div className="text-center justify-center text-text-primary text-base leading-snug">
-                                    Create a provider
-                                </div>
-                            </div>
-                        </button> */}
-
                         <DashboardCreateProvider />
                     </div>
                 </div>

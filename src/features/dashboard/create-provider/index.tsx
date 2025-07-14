@@ -7,7 +7,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "./custom-accordion"
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import FloatingLabelInput from "./custom-input";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -16,23 +16,47 @@ import { formSchema } from "./scheme";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { CreatedProvider, CreateProviderRequestPayload } from "./types";
+import useSWRMutation from "swr/mutation";
+import axiosInstance from "@/lib/axios";
+import Spinner24Svg from '@/icons/spinner-24.svg';
+import Copy16Svg from '@/icons/copy-16.svg';
+import Keyline16Svg from '@/icons/keyline-24.svg';
+
+import { toast } from "sonner"
+
+async function createProvider(url: string, payload: CreateProviderRequestPayload) {
+    return (await axiosInstance.post(url, payload, {
+        headers: {
+            'Authorization': 'Bearer kek',
+            'Content-Type': 'application/json',
+        }
+    })).data;
+}
+
+const formatSecret = (text: string) => {
+    return `${text.slice(0, 7)}...${text.slice(-4)}`;
+}
+
 
 const DashboardCreateProvider = () => {
     const [accordionCurrent, setAccordionCurrent] = useState("1");
-    const [providerName, setProviderName] = useState("");
-    const [providerDomain, setProviderDomain] = useState("");
+    const [createdProvider, setCreatedProvider] = useState<CreatedProvider | null>(null);
+
+    const { trigger, isMutating } = useSWRMutation(`/providers`, async (
+        url,
+        { arg }: { arg: CreateProviderRequestPayload },
+    ) => createProvider(url, arg))
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            domainName: "",
-            domaneUrl: "",
+            providerName: "",
+            providerDomainUrl: "",
         },
     })
 
@@ -41,22 +65,42 @@ const DashboardCreateProvider = () => {
         setAccordionCurrent(value)
     }
 
-    const onChangeProviderName = (e: ChangeEvent<HTMLInputElement>) => {
-        setProviderName(e.target.value)
-    }
-
-    const onChangeProviderDomain = (e: ChangeEvent<HTMLInputElement>) => {
-        setProviderDomain(e.target.value)
-    }
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log(values)
+
+        const payload: CreateProviderRequestPayload = {
+            provider_name: values.providerName,
+            provider_url: values.providerDomainUrl,
+        }
+
+        const createdProvider = await trigger(payload);
+
+        console.log({ createdProvider });
+
+        setCreatedProvider(createdProvider);
+
+        setAccordionCurrent('2');
+    }
+
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                toast.success('Код для интеграции на ваш сайт скопирован в буфер обмена!');
+            })
+            .catch((err) => {
+                console.error('Failed to copy text: ', err);
+                toast.error('Ошибка при копировании кода');
+            });
     }
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Open Dialog</Button>
+                <Button variant="outline" className="bg-zinc-900 rounded-[36px] px-4 py-1 shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] outline-1 outline-offset-[-0.50px] outline-white">
+                    <span className="text-text-primary text-base leading-snug">
+                        Create a provider
+                    </span>
+                </Button>
             </DialogTrigger>
 
             <DialogContent className="w-[476px]">
@@ -103,52 +147,52 @@ const DashboardCreateProvider = () => {
                                 <Form {...form}>
                                     <form
                                         onSubmit={form.handleSubmit(onSubmit)}
-                                        className="flex flex-col gap-2"
+                                        className="flex flex-col gap-4"
                                     >
-                                        <FormField
-                                            control={form.control}
-                                            name="domainName"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <FloatingLabelInput
-                                                            id="provider-name"
-                                                            label="Provider name"
-                                                            {...field}
-                                                        // value={providerName}
-                                                        // onChange={onChangeProviderName}
-                                                        />
-                                                    </FormControl>
+                                        <div className="flex flex-col gap-2">
+                                            <FormField
+                                                control={form.control}
+                                                name="providerName"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormControl>
+                                                            <FloatingLabelInput
+                                                                id="provider-name"
+                                                                label="Provider name"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
 
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
 
-                                        <FormField
-                                            control={form.control}
-                                            name="domaneUrl"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <FloatingLabelInput
-                                                            id="provider-domain"
-                                                            label="Domain"
-                                                            {...field}
+                                            <FormField
+                                                control={form.control}
+                                                name="providerDomainUrl"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormControl>
+                                                            <FloatingLabelInput
+                                                                id="provider-domain"
+                                                                label="Domain"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
 
-                                                        // value={providerDomain}
-                                                        // onChange={onChangeProviderDomain}
-                                                        />
-                                                    </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
 
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
 
-                                        <button type="submit" className="px-4 py-2 bg-button-primary-bg-active rounded-[999px] inline-flex justify-center items-center gap-1">
-                                            <div className="text-center justify-center text-text-primary text-baseleading-snug">
-                                                Submit
+                                        <button type="submit" className="px-4 py-2 bg-button-primary-bg-active rounded-full self-start">
+                                            <div className="h-6 text-center justify-center text-text-primary text-base leading-snug flex flex-row gap-2 items-center">
+                                                {isMutating && <Spinner24Svg className="animate-spin" />}
+
+                                                Continue
                                             </div>
                                         </button>
                                     </form>
@@ -172,15 +216,65 @@ const DashboardCreateProvider = () => {
                             </AccordionTrigger>
 
                             <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
-                                <p>
-                                    We offer worldwide shipping through trusted courier partners.
-                                    Standard delivery takes 3-5 business days, while express shipping
-                                    ensures delivery within 1-2 business days.
+                                <p className="text-text-secondary text-sm font-normals leading-tight mb-4">
+                                    We generated a unique private key and private address,
+                                    <br />
+                                    which are required to initialize and authenticate your integration
                                 </p>
-                                <p>
-                                    All orders are carefully packaged and fully insured. Track your
-                                    shipment in real-time through our dedicated tracking portal.
-                                </p>
+
+                                {createdProvider ? (
+                                    <>
+                                        <div className="inline-flex items-center gap-2">
+                                            <div className="h-7 px-2.5 py-1 bg-linear-[90deg,_#1A1A1A_99.94%,_#313131_137.42%,_#313131_146.6%] rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-center items-center gap-1">
+                                                <div className="text-text-primary text-xs font-medium leading-tight">
+                                                    {formatSecret(createdProvider.provider_address)}
+                                                </div>
+
+                                                <div className="w-4 h-4 relative">
+                                                    <div className="w-4 h-4 left-0 top-0 absolute">
+                                                        <button onClick={() => handleCopy(createdProvider.provider_address)}>
+                                                            <Copy16Svg />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="text-text-secondary text-sm font-normal leading-tight">Private address</div>
+                                        </div>
+
+                                        <div className="inline-flex items-center gap-2">
+                                            <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-center items-center gap-1">
+                                                <div className="text-text-primary text-xs font-medium leading-tight">
+                                                    {formatSecret(createdProvider.provider_private_key)}
+                                                </div>
+
+                                                <div className="w-4 h-4 relative">
+                                                    <div className="w-4 h-4 left-0 top-0 absolute">
+                                                        <button onClick={() => handleCopy(createdProvider.provider_private_key)}>
+                                                            <Copy16Svg />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="text-text-secondary text-sm font-normal leading-tight">Private key</div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="text-text-secondary text-sm font-normal leading-tight">
+                                        Generate provider on first step
+                                    </p>
+                                )}
+
+
+                                <button
+                                    onClick={() => setAccordionCurrent('3')}
+                                    className="px-4 py-2 bg-button-primary-bg-active rounded-full self-start"
+                                >
+                                    <div className="h-6 text-center justify-center text-text-primary text-base leading-snug flex flex-row gap-2 items-center">
+                                        Continue
+                                    </div>
+                                </button>
                             </AccordionContent>
                         </AccordionItem>
 
@@ -200,16 +294,51 @@ const DashboardCreateProvider = () => {
                             </AccordionTrigger>
 
                             <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
-                                <p>
-                                    We stand behind our products with a comprehensive 30-day return
-                                    policy. If you&apos;re not completely satisfied, simply return the
-                                    item in its original condition.
+                                <p className="text-text-secondary text-sm font-normals leading-tight mb-4">
+                                    Add our SDKs to your project:
                                 </p>
-                                <p>
-                                    Our hassle-free return process includes free return shipping and
-                                    full refunds processed within 48 hours of receiving the returned
-                                    item.
+
+                                <div className="h-7 w-[252px] px-2.5 py-1 bg-linear-[90deg,_#1A1A1A_99.94%,_#313131_137.42%,_#313131_146.6%] rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-between items-center self-start gap-1">
+                                    <div className="text-text-primary text-xs font-medium leading-tight overflow-hidden">
+                                        npm install @alien/sso-sdk-client-js
+                                    </div>
+
+                                    <div className="w-4 h-4 relative">
+                                        <div className="w-4 h-4 left-0 top-0 absolute">
+                                            <button onClick={() => handleCopy('npm install @alien/sso-sdk-client-js')}>
+                                                <Copy16Svg />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="h-7 w-[252px] px-2.5 py-1 bg-linear-[90deg,_#1A1A1A_99.94%,_#313131_137.42%,_#313131_146.6%] rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-between items-center self-start gap-1">
+                                    <div className="text-text-primary text-xs font-medium leading-tight overflow-hidden">
+                                        npm install @alien/sso-sdk-server-js
+                                    </div>
+
+                                    <div className="w-4 h-4 relative">
+                                        <div className="w-4 h-4 left-0 top-0 absolute ">
+                                            <button onClick={() => handleCopy('npm install @alien/sso-sdk-server-js')}>
+                                                <Copy16Svg />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p className="text-text-secondary text-sm font-normals leading-tight">
+                                    They handle frontend and backend parts of the SSO flow.
                                 </p>
+
+                                <button
+                                    onClick={() => setAccordionCurrent('4')}
+                                    className="px-4 py-2 bg-button-primary-bg-active rounded-full self-start"
+                                >
+                                    <div className="h-6 text-center justify-center text-text-primary text-base leading-snug flex flex-row gap-2 items-center">
+                                        Continue
+                                    </div>
+                                </button>
+
                             </AccordionContent>
                         </AccordionItem>
 
@@ -229,16 +358,23 @@ const DashboardCreateProvider = () => {
                             </AccordionTrigger>
 
                             <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
-                                <p>
-                                    We stand behind our products with a comprehensive 30-day return
-                                    policy. If you&apos;re not completely satisfied, simply return the
-                                    item in its original condition.
+                                <p className="text-text-secondary text-sm font-normals leading-tight">
+                                    We provide ready-made HTML and CSS, React. Using our
+                                    <br />
+                                    standard button helps build user trust. Custom styling is optional.
                                 </p>
-                                <p>
-                                    Our hassle-free return process includes free return shipping and
-                                    full refunds processed within 48 hours of receiving the returned
-                                    item.
-                                </p>
+
+                                <div className="w-96 h-36 px-3 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(41,121,255,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10">
+
+                                    <div className="w-72 h-12 px-4 py-2 bg-button-primary-bg-active rounded-2xl inline-flex justify-center items-center gap-2">
+                                        <Keyline16Svg />
+
+                                        <div className="text-center justify-center text-text-primary text-base leading-snug">
+                                            Sign-in with Alien ID
+                                        </div>
+                                    </div>
+
+                                </div>
                             </AccordionContent>
                         </AccordionItem>
 

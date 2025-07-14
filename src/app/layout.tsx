@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from 'next-themes'
 import { PropsWithChildren } from "react";
 import { booton } from "@/fonts/fonts";
+import { Toaster } from "@/components/ui/sonner"
 
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       >
         <ThemeProvider attribute="data-theme">
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
