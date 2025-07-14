@@ -1,6 +1,6 @@
 'use client';
 
-import { geistMono } from "@/fonts";
+import { geistMono } from "@/fonts/fonts";
 
 import Link16Svg from '@/icons/link-16.svg';
 

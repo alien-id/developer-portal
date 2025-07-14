@@ -1,5 +1,5 @@
 import { Header } from "@/features"
-import { geistMono } from "@/fonts"
+import { geistMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
 
@@ -16,13 +16,13 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     </div>
 
                     <nav className="flex flex-col gap-2">
-                        <Link href={"/dashboard/sso"} className="text-text-primary text-sm leading-tight">
+                        <Link href={"/dashboard/sso"} className="text-text-primary text-sm leading-tight font-booton">
                             Alien SSO
                         </Link>
 
-                        <Link href={"/dashboard"} className="text-text-primary text-sm leading-tight">
+                        {/* <Link href={"/dashboard"} className="text-text-primary text-sm leading-tight">
                             Mini-Apps
-                        </Link>
+                        </Link> */}
                     </nav>
                 </aside>
 

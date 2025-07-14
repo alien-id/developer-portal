@@ -1,7 +1,5 @@
 import Link from 'next/link'
-import styles from './index.module.css'
 import type { FC } from 'react'
-import { Button } from '@/components/ui/button'
 
 import Lock16Svg from '@/icons/lock-16.svg';
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';

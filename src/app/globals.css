@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+@theme inline {
+  --font-booton: var(--font-booton);
+}
+
 @theme {
 
   --color-neutral-0: rgba(255, 255, 255, 1);

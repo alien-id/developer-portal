@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from 'next-themes'
 import { PropsWithChildren } from "react";
-import { geist, geistMono } from "@/fonts";
+import { booton } from "@/fonts/fonts";
 
 import "./globals.css";
 
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       data-theme="dark"
     >
       <body
-        className={`${geist.variable} ${geistMono.variable} antialiased bg-bg-primary text-text-primary`}
+        className={`${booton.className} ${booton.variable} antialiased bg-bg-primary text-text-primary`}
       >
         <ThemeProvider attribute="data-theme">
           {children}
