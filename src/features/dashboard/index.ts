@@ -1,1 +1,1 @@
-export { default as SsoIntroduction } from './sso-introduction'
+export * from './sso';

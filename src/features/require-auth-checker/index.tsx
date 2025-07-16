@@ -4,16 +4,31 @@ import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+type User = {
+    app_callback_payload: {
+        full_name: string
+    },
+    app_callback_session_address: string,
+    app_callback_session_signature: string,
+    expired_at: number,
+    issued_at: number,
+}
+
 export function useAuthStatus() {
     const [isVerified, setIsVerified] = useState<boolean>(false);
     const [status, setStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
+    const [user, setUser] = useState<User | null>();
 
     useEffect(() => {
-        alienSsoSdkClient.verifyToken('kek').then(isVerified => {
+        alienSsoSdkClient.verifyToken().then(isVerified => {
             console.log('Verification result:', isVerified);
 
             if (isVerified) {
+                const user = alienSsoSdkClient.getUser();
+                console.log('user', user);
+
                 setIsVerified(isVerified);
+                setUser(user);
                 setStatus('authenticated');
             } else {
                 setStatus('unauthenticated');

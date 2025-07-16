@@ -1,15 +1,10 @@
 'use client';
 
-import { geistMono } from '@/fonts/fonts';
+import { robotoMono } from '@/fonts/fonts';
 import Link16Svg from '@/icons/link-16.svg';
 import DashboardCreateProvider from '../create-provider';
 
-const SsoIntroduction = () => {
-
-    const handleCreateProvider = () => {
-        console.log('!');
-    }
-
+const DashboardSsoIntroduction = () => {
     return (
         <div className="w-full h-full rounded-[40px] border border-stroke-default px-[110px] py-[36px]">
             <h2 className="text-text-primary text-xl mb-2">
@@ -69,7 +64,7 @@ const SsoIntroduction = () => {
                         </div>
 
                         <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
-                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${geistMono.className}`}>
+                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${robotoMono.className}`}>
                                 npm install @alien/sso-sdk-client-js
                             </div>
 
@@ -79,7 +74,7 @@ const SsoIntroduction = () => {
                         </div>
 
                         <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
-                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${geistMono.className}`}>
+                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${robotoMono.className}`}>
                                 npm install @alien/sso-sdk-server-js
                             </div>
 
@@ -147,5 +142,4 @@ const SsoIntroduction = () => {
     )
 }
 
-
-export default SsoIntroduction;
+export default DashboardSsoIntroduction;

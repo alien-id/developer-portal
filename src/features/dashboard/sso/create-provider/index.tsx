@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogBody, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./custom-dialog";
 import Close16Svg from '@/icons/close-16.svg';
@@ -24,7 +26,6 @@ import { CreatedProvider, CreateProviderRequestPayload } from "./types";
 import useSWRMutation from "swr/mutation";
 import axiosInstance from "@/lib/axios";
 import Spinner24Svg from '@/icons/spinner-24.svg';
-import Copy16Svg from '@/icons/copy-16.svg';
 import Keyline16Svg from '@/icons/keyline-24.svg';
 import { toast } from "sonner"
 
@@ -33,11 +34,11 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import { codeForClient, codeForServer } from "./constants";
 import { CopyField } from "./copy-field";
+import { cn } from "@/lib/utils";
 
 async function createProvider(url: string, payload: CreateProviderRequestPayload) {
     return (await axiosInstance.post(url, payload, {
         headers: {
-            'Authorization': 'Bearer kek',
             'Content-Type': 'application/json',
         }
     })).data;
@@ -142,9 +143,14 @@ const DashboardCreateProvider = () => {
                     >
                         <AccordionItem value="1">
                             <AccordionTrigger className="flex flex-row items-center py-2">
-                                <div className={`w-5 h-5 ${accordionCurrent === "1" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default/25 text-neutral-400"}  text-xs leading-none rounded-full relative overflow-hidden`}>
+                                <div
+                                    className={cn(
+                                        `w-5 h-5 text-xs leading-none rounded-full relative overflow-hidden`,
+                                        accordionCurrent === "1" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default text-neutral-400"
+                                    )}
+                                >
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
-                                        1
+                                        5
                                     </div>
                                 </div>
 
@@ -153,15 +159,15 @@ const DashboardCreateProvider = () => {
                                 </span>
                             </AccordionTrigger>
 
-                            <AccordionContent className="flex flex-col  text-balance pl-9">
-                                <p className="text-text-secondary text-sm font-normals leading-tight mb-4">
+                            <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
+                                <p className="text-text-secondary text-sm font-normals leading-tight">
                                     Name your provider and specify the domain.
                                 </p>
 
                                 <Form {...form}>
                                     <form
                                         onSubmit={form.handleSubmit(onSubmit)}
-                                        className="flex flex-col gap-4"
+                                        className="flex flex-col gap-4 "
                                     >
                                         <div className="flex flex-col gap-2">
                                             <FormField
@@ -218,7 +224,12 @@ const DashboardCreateProvider = () => {
 
                         <AccordionItem value="2">
                             <AccordionTrigger className="flex flex-row items-center py-2">
-                                <div className={`w-5 h-5 ${accordionCurrent === "2" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default/25 text-neutral-400"}  text-xs leading-none rounded-full relative overflow-hidden`}>
+                                <div
+                                    className={cn(
+                                        `w-5 h-5 text-xs leading-none rounded-full relative overflow-hidden`,
+                                        accordionCurrent === "2" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default text-neutral-400"
+                                    )}
+                                >
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
                                         2
                                     </div>
@@ -229,15 +240,15 @@ const DashboardCreateProvider = () => {
                                 </span>
                             </AccordionTrigger>
 
-                            <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
-                                <p className="text-text-secondary text-sm font-normals leading-tight mb-4">
+                            <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
+                                <p className="text-text-secondary text-sm font-normals leading-tight">
                                     We generated a unique private key and private address,
                                     <br />
                                     which are required to initialize and authenticate your integration
                                 </p>
 
                                 {createdProvider ? (
-                                    <>
+                                    <div className="flex flex-col gap-2">
                                         <div className="inline-flex items-center gap-2">
                                             <CopyField
                                                 valueToCopy={createdProvider.provider_address}
@@ -255,7 +266,7 @@ const DashboardCreateProvider = () => {
 
                                             <div className="text-text-secondary text-sm font-normal leading-tight">Private key</div>
                                         </div>
-                                    </>
+                                    </div>
                                 ) : (
                                     <p className="text-text-secondary text-sm font-normal leading-tight">
                                         Generate provider on first step to see full example!
@@ -278,7 +289,12 @@ const DashboardCreateProvider = () => {
 
                         <AccordionItem value="3">
                             <AccordionTrigger className="flex flex-row items-center py-2">
-                                <div className={`w-5 h-5 ${accordionCurrent === "3" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default/25 text-neutral-400"}  text-xs leading-none rounded-full relative overflow-hidden`}>
+                                <div
+                                    className={cn(
+                                        `w-5 h-5 text-xs leading-none rounded-full relative overflow-hidden`,
+                                        accordionCurrent === "3" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default text-neutral-400"
+                                    )}
+                                >
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
                                         3
                                     </div>
@@ -289,20 +305,22 @@ const DashboardCreateProvider = () => {
                                 </span>
                             </AccordionTrigger>
 
-                            <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
-                                <p className="text-text-secondary text-sm font-normals leading-tight mb-4">
+                            <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
+                                <p className="text-text-secondary text-sm font-normals leading-tight">
                                     Add our SDKs to your project:
                                 </p>
 
-                                <CopyField
-                                    valueToCopy={"npm install @alien/sso-sdk-client-js"}
-                                    valueToShow={"npm install @alien/sso-sdk-client-js"}
-                                />
+                                <div className="flex flex-col gap-2">
+                                    <CopyField
+                                        valueToCopy={"npm install @alien/sso-sdk-client-js"}
+                                        valueToShow={"npm install @alien/sso-sdk-client-js"}
+                                    />
 
-                                <CopyField
-                                    valueToCopy={"npm install @alien/sso-sdk-server-js"}
-                                    valueToShow={"npm install @alien/sso-sdk-server-js"}
-                                />
+                                    <CopyField
+                                        valueToCopy={"npm install @alien/sso-sdk-server-js"}
+                                        valueToShow={"npm install @alien/sso-sdk-server-js"}
+                                    />
+                                </div>
 
                                 {/* <div className="h-7 w-[252px] px-2.5 py-1 bg-linear-[90deg,_#1A1A1A_99.94%,_#313131_137.42%,_#313131_146.6%] rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-between items-center self-start gap-1">
                                     <div className="text-text-primary text-xs font-medium leading-tight overflow-hidden">
@@ -338,7 +356,12 @@ const DashboardCreateProvider = () => {
 
                         <AccordionItem value="4">
                             <AccordionTrigger className="flex flex-row items-center py-2">
-                                <div className={`w-5 h-5 ${accordionCurrent === "4" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default/25 text-neutral-400"}  text-xs leading-none rounded-full relative overflow-hidden`}>
+                                <div
+                                    className={cn(
+                                        `w-5 h-5 text-xs leading-none rounded-full relative overflow-hidden`,
+                                        accordionCurrent === "4" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default text-neutral-400"
+                                    )}
+                                >
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
                                         4
                                     </div>
@@ -349,7 +372,7 @@ const DashboardCreateProvider = () => {
                                 </span>
                             </AccordionTrigger>
 
-                            <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
+                            <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
                                 <p className="text-text-secondary text-sm font-normals leading-tight">
                                     We provide ready-made HTML and CSS, React. Using our
                                     <br />
@@ -393,7 +416,12 @@ const DashboardCreateProvider = () => {
 
                         <AccordionItem value="5">
                             <AccordionTrigger className="flex flex-row items-center py-2">
-                                <div className={`w-5 h-5 ${accordionCurrent === "5" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default/25 text-neutral-400"}  text-xs leading-none rounded-full relative overflow-hidden`}>
+                                <div
+                                    className={cn(
+                                        `w-5 h-5 text-xs leading-none rounded-full relative overflow-hidden`,
+                                        accordionCurrent === "5" ? "bg-alpha-blue-24 text-blue-300" : "border border-stroke-default text-neutral-400"
+                                    )}
+                                >
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
                                         5
                                     </div>
@@ -404,7 +432,7 @@ const DashboardCreateProvider = () => {
                                 </span>
                             </AccordionTrigger>
 
-                            <AccordionContent className="flex flex-col gap-4 text-balance pl-9">
+                            <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
                                 <p className="text-text-secondary text-sm font-normals leading-tight">
                                     Get a working code sample with your key and address
                                     <br />

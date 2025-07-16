@@ -1,5 +1,5 @@
 import { Header } from "@/features"
-import { geistMono } from "@/fonts/fonts"
+import { robotoMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
 
@@ -9,9 +9,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
 
             <Header />
 
-            <section className="max-w-[1080px] w-full mx-auto px-3 grid grid-cols-[192px_1fr_192px] gap-3">
+            <section className="max-w-[1080px] w-full mx-auto px-3 grid grid-cols-[1fr_696px_1fr] gap-3">
                 <aside>
-                    <div className={`mb-4 text-text-secondary text-xs font-medium uppercase leading-none tracking-tight ${geistMono}`}>
+                    <div className={`mb-4 text-text-secondary text-xs font-medium uppercase leading-none tracking-tight ${robotoMono.className}`}>
                         Menu
                     </div>
 

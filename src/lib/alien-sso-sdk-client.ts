@@ -1,3 +1,5 @@
+'use client';
+
 import { AlienSsoSdkClient } from "alien-sso-sdk-client-js";
 
 const alienSsoSdkClient = new AlienSsoSdkClient({
