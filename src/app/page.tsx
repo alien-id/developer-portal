@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import { Link } from 'nextra-theme-docs'
-import docsCardDark from './SSO.png'
-import docsCard from './SSO.png'
-import { Feature, Features, Header } from '@/features'
-import styles from './page.module.css'
-import './page.css'
+import { Header } from '@/features'
 import type { FC } from 'react'
+import { Button } from '@/components/ui/button'
+import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
 
 export const metadata: Metadata = {
   description:
@@ -18,63 +15,131 @@ const IndexPage: FC = () => {
     <section>
       <Header />
 
-      <div className="home-content">
-        <div className="content-container">
-          <h1 className="headline">
-            Integrate with <br className="max-sm:hidden" />
-            Alien Ecosystem
+      <main className="max-w-[636px] mx-auto flex flex-col items-center justify-center py-20 text-center">
+
+        <section className="max-w-4xl flex flex-col items-center mb-34">
+
+          <h1 className="text-center justify-start text-white text-5xl leading-14 mb-3">
+            Implement Alien Ecosystem
+            <br />
+            in just 5 minutes
           </h1>
-          <p className="subtitle">
-            Welcome to the Alien Ecosystem documentation. This enables developers to integrate their applications with the Alien ecosystem.
-          </p>
-          <p className="subtitle">
-            <Link className={styles.cta} href="/docs">
-              Get started <span>→</span>
-            </Link>
-          </p>
-        </div>
 
-        <div className="features-container x:border-b nextra-border">
-          <div className="content-container">
-            <Features>
-              <Feature
-                index={0}
-                large
-                centered
-                id="docs-card"
-                href="/docs/sso"
-              >
-                <Image fill src={docsCard} alt="Background" loading="eager" />
-                <Image fill
-                  src={docsCardDark}
-                  alt="Background (Dark)"
-                  loading="eager"
-                />
-                <h3 className='text-white text-3xl font-bold drop-shadow-md'>
-                  Intagrate with Alien SSO
-                </h3>
-              </Feature>
-
-              <Feature index={1} centered href="/docs/mini-apps">
-                <h3>
-                  Mini-Apps
-                </h3>
-
-                <p className='text-left'>
-                  The Alien Ecosystem supports two types of applications:
-                  <br />
-                  <br />
-                  - Mini Apps: Web applications that run inside the Alien native app (iOS/Android) within a WebView
-                  <br />
-                  <br />
-                  - Web Apps: Normal websites that integrate Sign in with Alien ID
-                </p>
-
-              </Feature>
-            </Features>
+          <div className="max-w-2xl mx-auto space-y-4 mb-6">
+            <div className="w-96 text-center justify-start text-text-secondary text-sm font-normal leading-tight">
+              Welcome to the Alien Ecosystem documentation.This enables developers to integrate their applications with Alien ecosystem.
+            </div>
           </div>
-        </div>
-      </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 ">
+            <Link href='/sign-in'>
+              <Button
+                variant={'brand'}
+                className='text-text-primary text-base leading-snug px-10 py-2'
+              >
+                Get started
+
+                <ArrowRight16Svg className="text-neutral-500" />
+              </Button>
+            </Link>
+
+            <Link href='/docs'>
+              <Button
+                variant="outline"
+                className="bg-neutral-800 rounded-[36px] border-none text-text-primary text-base leading-snug px-10 py-2"
+              >
+                Learn more
+                <ArrowRight16Svg />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-center justify-start text-sky-300 text-5xl leading-14 mb-20">
+            Alien SSO
+          </h2>
+
+          <div className=''>
+            <div className='py-10 border border-t-0 border-stroke-default'></div>
+            <div className='px-20 py-14 text-left bg-[url(/dots-background.png)] bg-repeat-round border border-stroke-default'>
+              <div className='text-text-secondary text-xs font-medium uppercase leading-none tracking-wide mb-5'>
+                [ capabilities ]
+              </div>
+
+              <h3 className='text-text-primary text-2xl leading-9 mb-10'>
+                Models that fit your needs
+              </h3>
+
+              <div className='grid grid-cols-2 gap-10'>
+                <div>
+                  <h4 className='text-text-primary text-base leading-normal mb-2'>
+                    Built for security
+                  </h4>
+
+                  <p className='text-text-secondary text-sm font-normal leading-tight'>
+                    Our SDK uses end-to-end encryption and a private key system. No passwords, no shared secrets.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className='text-text-primary text-base leading-normal mb-2'>
+                    Anonymous
+                  </h4>
+
+                  <p className='text-text-secondary text-sm font-normal leading-tight'>
+                    Users stay anonymous. The system doesn’t collect names, emails, or identifiers. All that’s used is a secure app-specific ID — invisible to everyone but the device itself.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className='text-text-primary text-base leading-normal mb-2'>
+                    Developer-first
+                  </h4>
+
+                  <p className='text-text-secondary text-sm font-normal leading-tight'>
+                    Users stay anonymous. The system doesn’t collect names, emails, or identifiers. All that’s used is a secure app-specific ID — invisible to everyone but the device itself.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className='text-text-primary text-base leading-normal mb-2'>
+                    Fast, seamless integration
+                  </h4>
+
+                  <p className='text-text-secondary text-sm font-normal leading-tight'>
+                    Install two packages, copy our usage example, and you’re live in minutes. The SDK handles everything from button rendering to secure backend validation.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <div className='py-10 border border-b-0 border-stroke-default'></div>
+          </div>
+
+
+        </section>
+
+      </main>
+
+      <header>
+        <nav className="max-w-[1080px] w-full mx-auto px-3 py-10 flex flex-row gap-6">
+          <Link href='/' className="text-text-tertiary text-sm leading-tight">
+            Privacy Policy
+          </Link>
+
+          <Link href='/' className="text-text-tertiary text-sm leading-tight">
+            Terms and conditions
+          </Link>
+
+          <Link href='/' className="text-text-tertiary text-sm leading-tight ml-auto">
+            © 2025 Alien. All rights reserved.
+          </Link>
+        </nav>
+      </header>
+
+
     </section>
   )
 }
