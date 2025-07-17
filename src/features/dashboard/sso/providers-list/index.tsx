@@ -12,51 +12,11 @@ import {
 } from "@/components/ui/table";
 import DashboardCreateProvider from "../create-provider";
 import { Provider } from "../types";
-
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
+import CopyField from "@/components/custom/copy-field";
+import { cn, formatSecret } from "@/lib/utils";
+import { robotoMono } from "@/fonts/fonts";
+import { Button } from "@/components/ui/button";
+import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
 
 interface DashboardSsoProvidersListProps {
     data: Provider[];
@@ -80,48 +40,95 @@ const DashboardSsoProvidersList = ({ data }: DashboardSsoProvidersListProps) => 
             <Table className="overflow-hidden">
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight">
+                        <TableHead
+                            className={cn(
+                                `max-w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight`,
+                                robotoMono.className
+                            )}
+                        >
                             Provider name
                         </TableHead>
-                        <TableHead className="w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight">
+
+                        <TableHead
+                            className={cn("max-w-[80px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight",
+                                robotoMono.className
+                            )}
+                        >
                             Domain
                         </TableHead>
-                        <TableHead className="w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight">
+
+                        <TableHead
+                            className={cn("max-w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight",
+                                robotoMono.className
+                            )}
+                        >
                             Private key
                         </TableHead>
-                        <TableHead className="text-text-secondary text-xs font-medium uppercase leading-none tracking-tight">
+
+                        <TableHead
+                            className={cn("max-w-[100px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight",
+                                robotoMono.className
+                            )}
+                        >
+
                             Address
+                        </TableHead>
+
+                        <TableHead
+                            className={cn("min-w-[10px] text-text-secondary text-xs font-medium uppercase leading-none tracking-tight",
+                                robotoMono.className
+                            )}
+                        >
                         </TableHead>
                     </TableRow>
                 </TableHeader>
 
                 <TableBody>
                     {data.map((provider) => (
-                        <TableRow key={provider.id}>
+                        <TableRow key={provider.id} className="group relative hover:bg-neutral-900">
                             <TableCell className="font-medium">
                                 {provider.provider_name}
                             </TableCell>
-                            <TableCell className="w-[100px]">
+
+                            <TableCell className="max-w-[80px] overflow-hidden text-ellipsis">
                                 {provider.provider_url}
                             </TableCell>
-                            <TableCell className="w-[100px]">
-                                {provider.provider_private_key}
+
+                            <TableCell className="max-w-[100px] relative z-10">
+                                <CopyField
+                                    valueToCopy={provider.provider_private_key}
+                                    valueToShow={formatSecret(provider.provider_private_key, 3, 3)}
+                                    outerWrapperClassName="max-w-[100px] overflow-hidden text-ellipsis"
+                                    innerWrapperClassName="blur-xs group-hover:blur-none transition-all duration-200 ease-in-out"
+                                />
                             </TableCell>
-                            <TableCell className="text-right">
-                                {provider.provider_address}
+
+                            <TableCell className="max-w-[100px] relative z-10">
+                                <CopyField
+                                    valueToCopy={provider.provider_address}
+                                    valueToShow={formatSecret(provider.provider_address, 3, 3)}
+                                    outerWrapperClassName="max-w-[100px] overflow-hidden text-ellipsis z-1"
+                                    innerWrapperClassName="blur-xs group-hover:blur-none transition-all duration-200 ease-in-out"
+                                />
+                            </TableCell>
+
+                            <TableCell
+                                className={cn(
+                                    "min-w-[10px] max-w-[80px]",
+                                    "absolute right-0 z-11 group-hover:-z-9",
+                                    "h-full flex items-center",
+                                    "bg-gradient-to-l from-black/100 via-black/100 to-transparent"
+                                )}
+                            >
+                                <Button variant={'ghost'} className="gap-0.5 text-blue-300 text-sm leading-tight">
+                                    Details
+                                    <ArrowRight16Svg />
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
-
-                <TableFooter>
-                    <TableRow>
-                        <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
-                    </TableRow>
-                </TableFooter>
             </Table>
-
         </div >
     )
 }

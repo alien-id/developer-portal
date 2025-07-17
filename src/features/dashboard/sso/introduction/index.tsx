@@ -1,6 +1,5 @@
 'use client';
 
-import { robotoMono } from '@/fonts/fonts';
 import Link16Svg from '@/icons/link-16.svg';
 import DashboardCreateProvider from '../create-provider';
 import CopyField from '@/components/custom/copy-field';

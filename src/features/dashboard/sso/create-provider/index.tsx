@@ -34,6 +34,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { codeForClient, codeForServer } from "./constants";
 import CopyField from "@/components/custom/copy-field";
 import { cn, formatSecret } from "@/lib/utils";
+import useSWR from "swr";
 
 async function createProvider(url: string, payload: CreateProviderRequestPayload) {
     return (await axiosInstance.post(url, payload, {
@@ -49,6 +50,8 @@ const DashboardCreateProvider = () => {
 
     const [createdProvider, setCreatedProvider] = useState<CreatedProvider | null>(null);
 
+    // const { mutate } = useSWR(`/providers`);
+
     const { trigger, isMutating } = useSWRMutation(`/providers`, async (
         url,
         { arg }: { arg: CreateProviderRequestPayload },
@@ -63,21 +66,16 @@ const DashboardCreateProvider = () => {
     })
 
     const handleChangeAccordionCurrent = (value: string) => {
-        console.log(value);
         setAccordionCurrent(value)
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
-
         const payload: CreateProviderRequestPayload = {
             provider_name: values.providerName,
             provider_url: values.providerDomainUrl,
         }
 
         const createdProvider = await trigger(payload);
-
-        console.log({ createdProvider });
 
         setCreatedProvider(createdProvider);
 

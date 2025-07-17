@@ -5,6 +5,7 @@ import { booton } from "@/fonts/fonts";
 import { Toaster } from "@/components/ui/sonner"
 
 import "./globals.css";
+import { SWRConfig } from "swr";
 
 export const metadata: Metadata = {
   title: "Developer Portal | Alien",
@@ -23,7 +24,15 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         className={`${booton.className} ${booton.variable} antialiased bg-bg-primary text-text-primary`}
       >
         <ThemeProvider attribute="data-theme">
-          {children}
+          <SWRConfig
+            value={{
+              revalidateOnFocus: false,
+            }}
+          >
+
+            {children}
+          </SWRConfig>
+
           <Toaster />
         </ThemeProvider>
       </body>
