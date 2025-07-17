@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { cn } from "@/lib/utils"
+import { useId } from "react";
 
 interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string
@@ -10,11 +11,13 @@ interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputEle
 export default function FloatingLabelInput({
     label,
 }: FloatingLabelInputProps) {
+    const id = useId();
+
     return (
         <div className="relative">
             <input
                 type="text"
-                id="floating_filled"
+                id={id}
                 className={cn(
                     "w-full peer appearance-none",
                     "px-4 pb-2 pt-6 w-full",
@@ -23,13 +26,14 @@ export default function FloatingLabelInput({
                     "text-base leading-snug text-text-primary bg-transparent",
                     "transition-all duration-200 ease-in-out"
                 )}
+                placeholder=" "
             />
 
             <label
-                htmlFor="floating_filled"
+                htmlFor={id}
                 className={cn(
-                    "absolute z-10 origin-[0] start-4 transform top-1/2 -translate-y-1/2 peer-focus:top-4",
-                    "text-base leading-snug text-neutral-600 peer-focus:text-xs peer-focus:leading-none",
+                    "absolute z-10 origin-[0] start-4 transform -translate-y-1/2 top-4 peer-placeholder-shown:top-1/2 peer-focus:top-4",
+                    "text-xs leading-snug text-neutral-600 peer-placeholder-shown:text-base peer-focus:text-xs peer-focus:leading-none",
                     "transition-all duration-200 ease-in-out",
                     "select-none"
                 )}
