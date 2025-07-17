@@ -1,13 +1,15 @@
 'use client';
 
-import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
+import QRCodeStyling from "qr-code-styling";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+
 import Logo2xGraySvg from '@/icons/logo-2x-gray.svg';
 import X16SuccessSvg from '@/icons/x-16-success.svg';
 import Spinner24Svg from '@/icons/spinner-24.svg';
+import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
 
-import QRCodeStyling from "qr-code-styling";
 
 const defaultUrl = "alienapp://create_session/authorize?callback_url=https%3A%2F%2Fsso.alien-api.com%2Fapp_callback%2F00cdf01f-f245-4ed4-8ecc-155c605fb24e&provider_address=00000001000000000000000300000000&expired_at=1752448776&link_signature=ab72e3fbe45513abe1c138ec9d0522a5d258a6604b389ee01bbc63a170dc41f5c0792f42f9f8e187b134021bc8dee6203c037cd80aef89e970e50620be49fb00"
 
@@ -74,7 +76,7 @@ function Authenticator() {
             if (!accessToken) return;
 
             // rework to object with isValid
-            const isValid = await alienSsoSdkClient.verifyToken('');
+            const isValid = await alienSsoSdkClient.verifyToken();
 
             if (!isValid) return;
 
@@ -154,6 +156,10 @@ function Authenticator() {
                     </div>
                 </div>
             </div>
+
+            <Link href={deepLink} className="text-text-secondary text-xs p-1 mb-4">
+                Direct link
+            </Link>
         </div>
     )
 }

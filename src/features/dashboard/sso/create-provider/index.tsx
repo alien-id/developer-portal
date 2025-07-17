@@ -37,7 +37,7 @@ import { cn, formatSecret } from "@/lib/utils";
 import useSWR from "swr";
 
 async function createProvider(url: string, payload: CreateProviderRequestPayload) {
-    return (await axiosInstance.post(url, payload, {
+    return (await axiosInstance.post('/providers', payload, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -50,9 +50,9 @@ const DashboardCreateProvider = () => {
 
     const [createdProvider, setCreatedProvider] = useState<CreatedProvider | null>(null);
 
-    // const { mutate } = useSWR(`/providers`);
+    const { mutate } = useSWR(`/providers`);
 
-    const { trigger, isMutating } = useSWRMutation(`/providers`, async (
+    const { trigger, isMutating } = useSWRMutation(`/providers/mutate`, async (
         url,
         { arg }: { arg: CreateProviderRequestPayload },
     ) => createProvider(url, arg))
@@ -84,6 +84,7 @@ const DashboardCreateProvider = () => {
 
     const handleFinish = () => {
         setIsDialogOpened(false);
+        mutate();
     }
 
     return (

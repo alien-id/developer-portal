@@ -27,6 +27,8 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           <SWRConfig
             value={{
               revalidateOnFocus: false,
+              revalidateIfStale: false,
+              revalidateOnReconnect: false,
             }}
           >
 
