@@ -10,9 +10,9 @@ const Header: FC = () => {
     return (
         <header>
             <div className="max-w-[1080px] w-full h-[60px] mx-auto px-3 grid grid-cols-3 place-items-stretch">
-                <div className="flex flex-row items-center gap-3">
+                <Link href={'/'} className="flex flex-row items-center gap-3">
                     <Logo1xWhiteSvg />
-                </div>
+                </Link>
 
                 <div className="flex flex-row items-center gap-3 justify-center text-sm text-text-tertiary leading-tight">
                     <Lock16Svg />

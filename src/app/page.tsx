@@ -4,6 +4,8 @@ import { Header } from '@/features'
 import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
+import LogoGradientSvg from '@/icons/logo-gradient.svg';
+import { MotionSection } from '@/components/framer-motion'
 
 export const metadata: Metadata = {
   description:
@@ -17,7 +19,13 @@ const IndexPage: FC = () => {
 
       <main className="max-w-[636px] mx-auto flex flex-col items-center justify-center py-20 text-center">
 
-        <section className="max-w-4xl flex flex-col items-center mb-34">
+
+        <MotionSection
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl flex flex-col items-center mb-34"
+        >
 
           <h1 className="text-center justify-start text-white text-5xl leading-14 mb-3">
             Implement Alien Ecosystem
@@ -32,6 +40,7 @@ const IndexPage: FC = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 ">
+
             <Link href='/sign-in'>
               <Button
                 variant={'brand'}
@@ -52,16 +61,28 @@ const IndexPage: FC = () => {
                 <ArrowRight16Svg />
               </Button>
             </Link>
-          </div>
-        </section>
 
-        <section>
+          </div>
+
+        </MotionSection>
+
+
+        <MotionSection
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="max-w-4xl flex flex-col items-center mb-4"
+        >
           <h2 className="text-center justify-start text-sky-300 text-5xl leading-14 mb-20">
             Alien SSO
           </h2>
 
-          <div className=''>
-            <div className='py-10 border border-t-0 border-stroke-default'></div>
+          <div>
+            <div className='relative py-5 border border-t-0 border-b-0 border-stroke-default'>
+              <div className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full border border-stroke-default bg-black" />
+              <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full border border-stroke-default bg-black" />
+            </div>
+
             <div className='px-20 py-14 text-left bg-[url(/dots-background.png)] bg-repeat-round border border-stroke-default'>
               <div className='text-text-secondary text-xs font-medium uppercase leading-none tracking-wide mb-5'>
                 [ capabilities ]
@@ -115,11 +136,41 @@ const IndexPage: FC = () => {
 
             </div>
 
-            <div className='py-10 border border-b-0 border-stroke-default'></div>
+            <div className='relative py-13 border border-b-0 border-t-0 border-stroke-default'>
+              <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full border border-stroke-default bg-black" />
+              <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full border border-stroke-default bg-black" />
+            </div>
           </div>
+        </MotionSection>
 
+        <MotionSection
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="max-w-4xl flex flex-col items-center mb-34"
+        >
+          <h2 className="relative text-center justify-start text-emerald-200 text-5xl leading-14 mb-30">
+            Mini-apps
 
-        </section>
+            <div className='absolute top-0 right-0 translate-x-80/100 -translate-y-80/100 px-1 py-1.5  border-2 rounded-full border-stroke-default text-[8px] text-text-secondary bg-bg-secondary leading-none'>
+              SOON
+            </div>
+          </h2>
+        </MotionSection>
+
+        <MotionSection
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="max-w-4xl flex flex-col items-center mb-34"
+        >
+
+          <LogoGradientSvg className="mb-6" />
+
+          <p className='text-text-secondary text-sm font-normal leading-tight'>
+            Accessing the Dev-Portal is a breeze! Just scan the QR code with your mobile app—no need for usernames or passwords.
+          </p>
+        </MotionSection>
 
       </main>
 
