@@ -9,7 +9,7 @@ type CopyFieldProps = {
     valueToCopy: string;
 };
 
-export function CopyField({ valueToShow, valueToCopy }: CopyFieldProps) {
+function CopyField({ valueToShow, valueToCopy }: CopyFieldProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
@@ -34,3 +34,5 @@ export function CopyField({ valueToShow, valueToCopy }: CopyFieldProps) {
         </div>
     );
 }
+
+export default CopyField;

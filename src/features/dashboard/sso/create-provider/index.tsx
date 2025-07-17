@@ -1,16 +1,16 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogBody, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./custom-dialog";
+import { Dialog, DialogBody, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/custom/custom-dialog";
 import Close16Svg from '@/icons/close-16.svg';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "./custom-accordion"
+} from "@/components/custom/custom-accordion"
 import { useState } from "react";
-import FloatingLabelInput from "./custom-input";
+import FloatingLabelInput from "@/components/custom/custom-input";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,14 +27,13 @@ import useSWRMutation from "swr/mutation";
 import axiosInstance from "@/lib/axios";
 import Spinner24Svg from '@/icons/spinner-24.svg';
 import Keyline16Svg from '@/icons/keyline-24.svg';
-import { toast } from "sonner"
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import { codeForClient, codeForServer } from "./constants";
-import { CopyField } from "./copy-field";
-import { cn } from "@/lib/utils";
+import CopyField from "@/components/custom/copy-field";
+import { cn, formatSecret } from "@/lib/utils";
 
 async function createProvider(url: string, payload: CreateProviderRequestPayload) {
     return (await axiosInstance.post(url, payload, {
@@ -43,11 +42,6 @@ async function createProvider(url: string, payload: CreateProviderRequestPayload
         }
     })).data;
 }
-
-const formatSecret = (text: string) => {
-    return `${text.slice(0, 10)}...${text.slice(-4)}`;
-}
-
 
 const DashboardCreateProvider = () => {
     const [isDialogOpened, setIsDialogOpened] = useState(false);
@@ -90,17 +84,6 @@ const DashboardCreateProvider = () => {
         setAccordionCurrent('2');
     }
 
-    const handleCopy = (text: string) => {
-        navigator.clipboard.writeText(text)
-            .then(() => {
-                toast.success('Copied to clipboard');
-            })
-            .catch((err) => {
-                console.error('Failed to copy text: ', err);
-                toast.error('Failed to copy text');
-            });
-    }
-
     const handleFinish = () => {
         setIsDialogOpened(false);
     }
@@ -111,7 +94,7 @@ const DashboardCreateProvider = () => {
             onOpenChange={setIsDialogOpened}
         >
             <DialogTrigger asChild>
-                <Button variant="outline" className="bg-zinc-900 rounded-[36px] px-4 py-1 shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] outline-1 outline-offset-[-0.50px] outline-white">
+                <Button variant="brand">
                     <span className="text-text-primary text-base leading-snug">
                         Create a provider
                     </span>
@@ -321,20 +304,6 @@ const DashboardCreateProvider = () => {
                                         valueToShow={"npm install @alien/sso-sdk-server-js"}
                                     />
                                 </div>
-
-                                {/* <div className="h-7 w-[252px] px-2.5 py-1 bg-linear-[90deg,_#1A1A1A_99.94%,_#313131_137.42%,_#313131_146.6%] rounded-lg shadow-[inset_0px_0px_16px_0px_#313131] outline-1 outline-offset-[-0.50px] outline-white/10 flex justify-between items-center self-start gap-1">
-                                    <div className="text-text-primary text-xs font-medium leading-tight overflow-hidden">
-                                        npm install @alien/sso-sdk-server-js
-                                    </div>
-
-                                    <div className="w-4 h-4 relative">
-                                        <div className="w-4 h-4 left-0 top-0 absolute ">
-                                            <button onClick={() => handleCopy('npm install @alien/sso-sdk-server-js')}>
-                                                <Copy16Svg />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div> */}
 
                                 <p className="text-text-secondary text-sm font-normals leading-tight">
                                     They handle frontend and backend parts of the SSO flow.

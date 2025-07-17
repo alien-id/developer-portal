@@ -3,6 +3,7 @@
 import { robotoMono } from '@/fonts/fonts';
 import Link16Svg from '@/icons/link-16.svg';
 import DashboardCreateProvider from '../create-provider';
+import CopyField from '@/components/custom/copy-field';
 
 const DashboardSsoIntroduction = () => {
     return (
@@ -63,24 +64,16 @@ const DashboardSsoIntroduction = () => {
                             </div>
                         </div>
 
-                        <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
-                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${robotoMono.className}`}>
-                                npm install @alien/sso-sdk-client-js
-                            </div>
+                        <div className="flex flex-col gap-2">
+                            <CopyField
+                                valueToCopy={"npm install @alien/sso-sdk-client-js"}
+                                valueToShow={"npm install @alien/sso-sdk-client-js"}
+                            />
 
-                            <div className="w-4 h-4 relative overflow-hidden">
-                                <div className="w-4 h-4 left-0 top-0 absolute overflow-hidden"></div>
-                            </div>
-                        </div>
-
-                        <div className="h-7 px-2.5 py-1 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-800 rounded-lg shadow-[inset_0px_3px_11px_0px_rgba(101,178,255,0.70)] shadow-[inset_0px_0px_16px_0px_rgba(49,49,49,1.00)] outline outline-1 outline-offset-[-0.50px] outline-white/10 inline-flex justify-center items-center gap-1">
-                            <div className={`justify-start text-text-primary text-xs font-medium leading-tight ${robotoMono.className}`}>
-                                npm install @alien/sso-sdk-server-js
-                            </div>
-
-                            <div className="w-4 h-4 relative overflow-hidden">
-                                <div className="w-4 h-4 left-0 top-0 absolute overflow-hidden"></div>
-                            </div>
+                            <CopyField
+                                valueToCopy={"npm install @alien/sso-sdk-server-js"}
+                                valueToShow={"npm install @alien/sso-sdk-server-js"}
+                            />
                         </div>
                     </div>
                 </div>
