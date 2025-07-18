@@ -5,7 +5,7 @@ import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
 import LogoGradientSvg from '@/icons/logo-gradient.svg';
-import { MotionSection } from '@/components/framer-motion'
+import { AnimatedSection, MotionSection } from '@/components/framer-motion'
 
 export const metadata: Metadata = {
   description:
@@ -20,10 +20,7 @@ const IndexPage: FC = () => {
       <main className="max-w-[636px] mx-auto flex flex-col items-center justify-center py-20 text-center">
 
 
-        <MotionSection
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        <AnimatedSection
           className="max-w-4xl flex flex-col items-center mb-34"
         >
 
@@ -64,13 +61,10 @@ const IndexPage: FC = () => {
 
           </div>
 
-        </MotionSection>
+        </AnimatedSection>
 
 
-        <MotionSection
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+        <AnimatedSection
           className="max-w-4xl flex flex-col items-center mb-4"
         >
           <h2 className="text-center justify-start text-sky-300 text-5xl leading-14 mb-20">
@@ -141,12 +135,9 @@ const IndexPage: FC = () => {
               <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full border border-stroke-default bg-black" />
             </div>
           </div>
-        </MotionSection>
+        </AnimatedSection>
 
-        <MotionSection
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+        <AnimatedSection
           className="max-w-4xl flex flex-col items-center mb-34"
         >
           <h2 className="relative text-center justify-start text-emerald-200 text-5xl leading-14 mb-30">
@@ -156,12 +147,9 @@ const IndexPage: FC = () => {
               SOON
             </div>
           </h2>
-        </MotionSection>
+        </AnimatedSection>
 
-        <MotionSection
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+        <AnimatedSection
           className="max-w-4xl flex flex-col items-center mb-34"
         >
 
@@ -170,11 +158,11 @@ const IndexPage: FC = () => {
           <p className='text-text-secondary text-sm font-normal leading-tight'>
             Accessing the Dev-Portal is a breeze! Just scan the QR code with your mobile app—no need for usernames or passwords.
           </p>
-        </MotionSection>
+        </AnimatedSection>
 
       </main>
 
-      <header>
+      <footer>
         <nav className="max-w-[1080px] w-full mx-auto px-3 py-10 flex flex-row gap-6">
           <Link href='/' className="text-text-tertiary text-sm leading-tight">
             Privacy Policy
@@ -188,7 +176,7 @@ const IndexPage: FC = () => {
             © 2025 Alien. All rights reserved.
           </Link>
         </nav>
-      </header>
+      </footer>
 
 
     </section>
