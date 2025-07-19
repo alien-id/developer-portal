@@ -4,7 +4,6 @@ import QRCodeStyling from "qr-code-styling";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
 import Logo2xGraySvg from '@/icons/logo-2x-gray.svg';
 import X16SuccessSvg from '@/icons/x-16-success.svg';
 import Spinner24Svg from '@/icons/spinner-24.svg';

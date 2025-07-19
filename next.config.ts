@@ -2,12 +2,10 @@ import type { NextConfig } from "next";
 import nextra from 'nextra'
 
 const withNextra = nextra({
-  // ... Add Nextra-specific options here
+  contentDirBasePath: '/docs',
 })
 
-
 const nextConfig: NextConfig = {
-  /* config options here */
   reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
@@ -18,4 +16,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig
+export default withNextra(nextConfig);

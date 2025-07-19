@@ -5,7 +5,7 @@ import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
 import LogoGradientSvg from '@/icons/logo-gradient.svg';
-import { AnimatedSection, MotionSection } from '@/components/framer-motion'
+import { AnimatedSection } from '@/components/framer-motion'
 
 export const metadata: Metadata = {
   description:
