@@ -39,4 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-alien-sso-sdk-*.tgz
+# alien-sso-sdk-*.tgz
