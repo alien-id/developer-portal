@@ -1,6 +1,7 @@
 'use client';
 
 import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type User = {
@@ -14,45 +15,73 @@ type User = {
 }
 
 export function useAuthStatus() {
-    const [isVerified, setIsVerified] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>();
+
     const [status, setStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
-    const [, setUser] = useState<User | null>();
 
     useEffect(() => {
-        alienSsoSdkClient.verifyToken().then(isVerified => {
-            console.log('Verification result:', isVerified);
+        const verifyToken = async () => {
+            const token = alienSsoSdkClient.getAccessToken();
 
-            if (isVerified) {
-                const user = alienSsoSdkClient.getUser();
-                console.log('user', user);
+            if (!token) {
+                setStatus('unauthenticated');
+                return;
+            }
 
-                setIsVerified(isVerified);
-                setUser(user);
-                setStatus('authenticated');
-            } else {
+            try {
+                const isVerified = await alienSsoSdkClient.verifyToken();
+
+                if (isVerified) {
+                    const user = alienSsoSdkClient.getUser();
+
+                    setUser(user);
+                    setStatus('authenticated');
+                } else {
+                    setStatus('unauthenticated');
+                }
+            } catch (error) {
                 setStatus('unauthenticated');
             }
-        }).catch(() => {
-            setStatus('unauthenticated');
-        });
+        }
+
+        verifyToken();
     }, []);
 
-    return { isVerified, status };
+    console.log({ status, user });
+
+    return { status, user };
 }
 
-export default function RequireAuthChecker({ children }: { children: React.ReactNode }) {
-    const { isVerified, status } = useAuthStatus();
-    console.log('Verification status:', status);
+export function AuthCheck({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
 
-    // useEffect(() => {
-    //     if (status === "unauthenticated") {
-    //         router.push("/login");
-    //     }
-    // }, [status, router]);
+    const { status } = useAuthStatus();
 
-    if (status === "loading") return <p>Loading...</p>;
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/sign-in");
+        }
+    }, [status, router]);
 
-    if (!isVerified) return null;
+    if (status === 'loading') return <p>Checking auth...</p>;
 
-    return <>{children}</>;
+    if (status === 'unauthenticated') return null;
+
+    return <>{children}</>
+}
+
+export function withAuthCheck(Component: React.ComponentType) {
+    return function AuthenticatedComponent(props: any) {
+        const router = useRouter();
+
+        const { status } = useAuthStatus();
+
+        useEffect(() => {
+            if (status === "unauthenticated") {
+                router.push("/sign-in");
+            }
+        }, [status, router]);
+
+        return <Component {...props} />
+    }
 }

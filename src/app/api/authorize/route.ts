@@ -9,13 +9,14 @@ const PROVIDER_PRIVATE_KEY = process.env.PROVIDER_PRIVATE_KEY;
 
 if (!PROVIDER_PRIVATE_KEY) throw new Error("No PROVIDER_PRIVATE_KEY env provided!");
 
-console.log({ PROVIDER_ADDRESS, PROVIDER_PRIVATE_KEY });
+const ALIEN_SSO_ROUTER_URL = process.env.ALIEN_SSO_ROUTER_URL;
 
+if (!ALIEN_SSO_ROUTER_URL) throw new Error("No ALIEN_SSO_ROUTER_URL env provided!");
 
 const alienSsoSdkServer = new AlienSsoSdkServer({
     providerAddress: PROVIDER_ADDRESS,
     providerPrivateKey: PROVIDER_PRIVATE_KEY,
-    ssoBaseUrl: 'https://sso.alien-api.com',
+    ssoBaseUrl: ALIEN_SSO_ROUTER_URL,
 });
 
 export async function POST(request: NextRequest) {
@@ -26,16 +27,14 @@ export async function POST(request: NextRequest) {
             code_challenge,
         } = requestBody;
 
-        console.log('code_challenge', code_challenge);
-
         const authResponse = await alienSsoSdkServer.authorize(code_challenge);
 
         return NextResponse.json(authResponse);
     } catch (error) {
-        console.log('POST', error);
+        console.log('Authorize handler error: ', error);
 
         return new NextResponse(`Authorize error`, {
-            status: 400,
+            status: 500,
         })
     }
 }

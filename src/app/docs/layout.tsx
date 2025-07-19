@@ -3,9 +3,12 @@ import { Banner } from "nextra/components";
 import { getPageMap } from 'nextra/page-map'
 import type { PageMapItem } from 'nextra'
 import { PropsWithChildren } from "react";
+import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
+import dynamic from 'next/dynamic';
+import Link from "next/link";
+import { AuthState } from "@/features";
 import 'nextra-theme-docs/style.css'
 
-import dynamic from 'next/dynamic';
 
 const NextraLayout = dynamic(() =>
     import('nextra-theme-docs').then((mod) => mod.Layout),
@@ -31,18 +34,34 @@ const banner = <Banner storageKey="some-key">Alien SSO v1.0.0 coming soon!</Bann
 
 const navbar = (
     <NextraNavbar
-        logo={<b>Alien</b>}
-        projectLink={'https://github.com/shuding/nextra/tree/main/docs'}
+        logo={
+            <div className="flex flex-row items-center">
+                <Logo1xWhiteSvg />
+            </div>
+        }
+        projectLink={'https://github.com/alien-id/sso-sdk-js'}
     >
-        SignIn
+        <AuthState />
     </NextraNavbar>
 )
 
-const footer = <NextraFooter>MIT {new Date().getFullYear()} © Alien</NextraFooter>
+const footer = <NextraFooter >
+    <nav className="w-full mx-auto flex flex-row gap-6">
+        <Link href='/' className="text-text-tertiary text-sm leading-tight">
+            Privacy Policy
+        </Link>
 
-export default async function DocsLayout({
-    children,
-}: PropsWithChildren) {
+        <Link href='/' className="text-text-tertiary text-sm leading-tight">
+            Terms and conditions
+        </Link>
+
+        <Link href='/' className="text-text-tertiary text-sm leading-tight ml-auto">
+            © 2025 Alien. All rights reserved.
+        </Link>
+    </nav>
+</NextraFooter>
+
+export default async function DocsLayout({ children }: PropsWithChildren) {
     const pageMap = await getPageMap();
 
     // Only serve from /content/docs folder and don't touch basic pages from /app
@@ -52,13 +71,13 @@ export default async function DocsLayout({
 
     return (
         <NextraLayout
+            pageMap={docsMap}
             banner={banner}
             navbar={navbar}
-            pageMap={docsMap}
-            docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
+            footer={footer}
+            docsRepositoryBase="https://github.com/alien-id/developer-portal/tree/main"
             editLink="Edit this page on GitHub"
             sidebar={{ defaultMenuCollapseLevel: 1 }}
-            footer={footer}
         >
             {children}
         </NextraLayout>

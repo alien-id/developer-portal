@@ -1,4 +1,4 @@
-import { Header } from "@/features"
+import { AuthCheck, Header, withAuthCheck } from "@/features"
 import { robotoMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -16,19 +16,23 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     </div>
 
                     <nav className="flex flex-col gap-2">
-                        <Link href={"/dashboard/sso"} className="text-text-primary text-sm leading-tight font-booton">
+                        <Link
+                            href={"/dashboard/sso"}
+                            className="text-text-primary text-sm leading-tight font-booton"
+                        >
                             Alien SSO
                         </Link>
                     </nav>
                 </aside>
 
-                {children}
+                <AuthCheck>
+                    {children}
+                </AuthCheck>
 
                 <aside />
-
             </section>
         </section>
     )
 }
 
-export default DashboardLayout
+export default DashboardLayout;

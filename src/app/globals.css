@@ -44,6 +44,7 @@
   --color-stroke-disabled: var(--color-alpha-neutral-24);
 
   --color-button-primary-bg-active: var(--color-blue-500);
+  --color-button-secondary-bg-active: var(--color-alpha-neutral-24);
 
   --leading-tight: 20px;
   --leading-snug: 22px;
