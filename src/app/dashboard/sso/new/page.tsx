@@ -44,7 +44,7 @@ const DashboardPage = () => {
             provider_url: values.providerUrl,
         }
 
-        const response = await fetch('http://localhost:3005/providers', {
+        await fetch('http://localhost:3005/providers', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

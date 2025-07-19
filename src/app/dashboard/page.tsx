@@ -1,9 +1,3 @@
-'use client';
-
-import { AppSidebar } from "@/components/app-sidebar";
-import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-
 const DashboardPage = () => {
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">

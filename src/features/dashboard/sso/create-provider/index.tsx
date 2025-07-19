@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogBody, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/custom/custom-dialog";
+import { Dialog, DialogBody, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/custom/custom-dialog";
 import Close16Svg from '@/icons/close-16.svg';
 import {
     Accordion,
@@ -366,7 +366,7 @@ const DashboardCreateProvider = () => {
                                     language="tsx"
                                     style={oneDark}
                                 >
-                                    import SignInButton from "@alien/sso-sdk-client-js"
+                                    {`import SignInButton from "@alien/sso-sdk-client-js"`}
                                 </SyntaxHighlighter>
 
                                 <button

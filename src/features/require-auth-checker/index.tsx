@@ -1,7 +1,6 @@
 'use client';
 
 import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type User = {
@@ -17,7 +16,7 @@ type User = {
 export function useAuthStatus() {
     const [isVerified, setIsVerified] = useState<boolean>(false);
     const [status, setStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
-    const [user, setUser] = useState<User | null>();
+    const [, setUser] = useState<User | null>();
 
     useEffect(() => {
         alienSsoSdkClient.verifyToken().then(isVerified => {
@@ -42,8 +41,6 @@ export function useAuthStatus() {
 }
 
 export default function RequireAuthChecker({ children }: { children: React.ReactNode }) {
-    const router = useRouter();
-
     const { isVerified, status } = useAuthStatus();
     console.log('Verification status:', status);
 

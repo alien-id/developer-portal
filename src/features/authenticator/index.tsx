@@ -83,7 +83,7 @@ function Authenticator() {
         }
 
         initAuthorization();
-    }, [ref]);
+    }, [ref, router]);
 
     return (
         <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-4 flex flex-col items-center">

@@ -1,9 +1,18 @@
 import { AlienSsoSdkServer } from 'alien-sso-sdk-server-js';
 import { NextRequest, NextResponse } from 'next/server'
 
+const PROVIDER_ADDRESS = process.env.PROVIDER_ADDRESS;
+
+if (!PROVIDER_ADDRESS) throw new Error("No PROVIDER_ADDRESS env provided!");
+
+const PROVIDER_PRIVATE_KEY = process.env.PROVIDER_PRIVATE_KEY;
+
+if (!PROVIDER_PRIVATE_KEY) throw new Error("No PROVIDER_PRIVATE_KEY env provided!");
+
+
 const alienSsoSdkServer = new AlienSsoSdkServer({
-    providerAddress: '00000001000000000000000300000000',
-    providerPrivateKey: 'ac5f5a3e6b32e21589333c87b50ce66819de6fca101757e26129721319328db79d88a4f7128be19aa384cc7b071962a0064f1178fc3b2bca99572f7109e80a53',
+    providerAddress: PROVIDER_ADDRESS,
+    providerPrivateKey: PROVIDER_PRIVATE_KEY,
     ssoBaseUrl: 'https://sso.alien-api.com',
 });
 

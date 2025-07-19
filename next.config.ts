@@ -7,6 +7,7 @@ const withNextra = nextra({
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  pageExtensions: ['ts', 'tsx'],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

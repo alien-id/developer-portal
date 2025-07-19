@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Roboto_Mono } from 'next/font/google';
+import { Roboto_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 
 export const robotoMono = Roboto_Mono({
