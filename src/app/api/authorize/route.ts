@@ -9,6 +9,8 @@ const PROVIDER_PRIVATE_KEY = process.env.PROVIDER_PRIVATE_KEY;
 
 if (!PROVIDER_PRIVATE_KEY) throw new Error("No PROVIDER_PRIVATE_KEY env provided!");
 
+console.log({ PROVIDER_ADDRESS, PROVIDER_PRIVATE_KEY });
+
 
 const alienSsoSdkServer = new AlienSsoSdkServer({
     providerAddress: PROVIDER_ADDRESS,
