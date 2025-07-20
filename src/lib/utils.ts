@@ -33,3 +33,7 @@ export function getInitialsFromFullName(fullName: string): string {
 
   return first + last;
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
