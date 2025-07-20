@@ -1,4 +1,4 @@
-import { AuthCheck, Header, withAuthCheck } from "@/features"
+import { AuthCheck, Header } from "@/features"
 import { robotoMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"

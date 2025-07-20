@@ -40,6 +40,8 @@ export function useAuthStatus() {
                     setStatus('unauthenticated');
                 }
             } catch (error) {
+                console.log("useAuthStatus error:", error);
+
                 setStatus('unauthenticated');
             }
         }
@@ -68,20 +70,4 @@ export function AuthCheck({ children }: { children: React.ReactNode }) {
     if (status === 'unauthenticated') return null;
 
     return <>{children}</>
-}
-
-export function withAuthCheck(Component: React.ComponentType) {
-    return function AuthenticatedComponent(props: any) {
-        const router = useRouter();
-
-        const { status } = useAuthStatus();
-
-        useEffect(() => {
-            if (status === "unauthenticated") {
-                router.push("/sign-in");
-            }
-        }, [status, router]);
-
-        return <Component {...props} />
-    }
 }
