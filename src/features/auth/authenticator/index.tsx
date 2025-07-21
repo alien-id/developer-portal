@@ -61,7 +61,7 @@ function Authenticator() {
 
                 await sleep(3000);
 
-                // router.push('/dashboard/sso');
+                router.push('/dashboard/sso');
             } catch (error) {
                 console.log("initAuthorization error: ", error);
 
