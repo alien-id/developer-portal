@@ -12,62 +12,23 @@ import Refresh16Svg from '@/icons/refresh-16.svg';
 
 import Spinner24Svg from '@/icons/spinner-24.svg';
 import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
-import { getInitialsFromFullName, sleep } from "@/lib/utils";
+import { cn, getInitialsFromFullName, sleep } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const defaultDeepLink = "alienapp://create_session/authorize?callback_url=https%3A%2F%2Fsso.alien-api.com%2Fapp_callback%2F00cdf01f-f245-4ed4-8ecc-155c605fb24e&provider_address=00000001000000000000000300000000&expired_at=1752448776&link_signature=ab72e3fbe45513abe1c138ec9d0522a5d258a6604b389ee01bbc63a170dc41f5c0792f42f9f8e187b134021bc8dee6203c037cd80aef89e970e50620be49fb00"
-// const defaultDeepLink = "alienapp://c_s/a?cb=https%3A%2F%2Fsso.alien-api.com%2Fapp_callback%2F00cdf01f-f245-4ed4-8ecc-155c605fb24e&pa=00000001000000000000000300000000&ea=1752448776&ls=ab72e3fbe45513abe1c138ec9d0522a5d258a6604b389ee01bbc63a170dc41f5c0792f42f9f8e187b134021bc8dee6203c037cd80aef89e970e50620be49fb00"
-
-type User = {
-    app_callback_payload: {
-        full_name: string
-    },
-    app_callback_session_address: string,
-    app_callback_session_signature: string,
-    expired_at: number,
-    issued_at: number,
-}
+import { User } from "@/types";
+import { qrOptions } from "./config";
 
 function Authenticator() {
     const router = useRouter();
-
-    const [user, setUser] = useState<User | null>(null);
 
     const ref = useRef(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
-
-    const [deepLink, setDeepLink] = useState<string>(defaultDeepLink);
+    const [deepLink, setDeepLink] = useState<string>('');
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const qrCode = new QRCodeStyling({
-            data: defaultDeepLink,
-            width: 208,
-            height: 208,
-            margin: 0,
-            shape: 'square',
-            type: 'canvas',
-            backgroundOptions: {
-                color: undefined,
-            },
-            cornersSquareOptions: {
-                type: 'extra-rounded',
-            },
-            cornersDotOptions: {
-                type: 'rounded',
-            },
-            dotsOptions: {
-                color: "#ffffff",
-                type: "extra-rounded"
-            },
-            image: "/logo-gradient.svg",
-            imageOptions: {
-                crossOrigin: "anonymous",
-                margin: 10,
-                hideBackgroundDots: true,
-            },
-        });
+        const qrCode = new QRCodeStyling(qrOptions);
 
         if (ref.current) {
             qrCode.append(ref.current);
@@ -119,7 +80,7 @@ function Authenticator() {
     if (isError) {
         return (
             <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-9 grid grid-rows-[auto_1fr] place-items-center">
-                <Logo2xGraySvg className="" />
+                <Logo2xGraySvg className="shrink-0" />
 
                 <div className="flex flex-col items-center justify-center">
                     <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-red-700 after:rounded-full after:blur-2xl">
@@ -151,7 +112,7 @@ function Authenticator() {
 
         return (
             <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-9 grid grid-rows-[auto_1fr] place-items-center">
-                <Logo2xGraySvg className="" />
+                <Logo2xGraySvg className="shrink-0" />
 
                 <div className="flex flex-col items-center justify-center">
                     <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
@@ -185,21 +146,25 @@ function Authenticator() {
         )
     }
 
-
-
     return (
         <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-4 flex flex-col items-center">
-            <Logo2xGraySvg className="mb-6" />
+            <Logo2xGraySvg className="mb-6 shrink-0" />
 
             <p className="text-text-primary text-2xl mb-10 text-center">
                 Scan with Alien App <br />
                 to sign in to Developer Portal
             </p>
 
-            <div className="w-64 h-64 p-6 mb-10 rounded-[32px] relative border border-stroke-default">
+            <div className="max-w-80 max-h-80 w-80 h-80 p-6 mb-10 rounded-[32px] relative border border-stroke-default">
                 {isLoading && <Spinner24Svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin" />}
 
-                <div ref={ref} className={`${isLoading && "blur-md"}`} />
+                <div
+                    ref={ref}
+                    className={cn(
+                        isLoading && "blur-md",
+                        "max-w-68 max-h-68 w-68 h-68 flex"
+                    )}
+                />
             </div>
 
             <div className="w-[476px] p-4 bg-bg-secondary rounded-2xl">
@@ -258,9 +223,12 @@ function Authenticator() {
                 </div>
             </div>
 
-            <Link href={deepLink} className="text-text-secondary text-xs p-1 mb-4">
-                Direct link
-            </Link>
+            {deepLink && (
+                <Link href={deepLink} className="text-text-secondary text-xs p-1 mb-4">
+                    Direct link
+                </Link>
+            )}
+
         </div>
     )
 }

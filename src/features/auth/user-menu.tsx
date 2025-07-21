@@ -1,12 +1,12 @@
 'use client';
 
 import Link from "next/link";
-import { useAuthStatus } from "../require-auth-checker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitialsFromFullName } from "@/lib/utils";
+import useAuth from "./use-auth";
 
-function AuthState() {
-    const { status, user } = useAuthStatus();
+function UserMenu() {
+    const { status, user } = useAuth();
 
     if (status === 'loading') return (
         <>l</>
@@ -38,4 +38,4 @@ function AuthState() {
     )
 }
 
-export default AuthState;
+export default UserMenu;

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import Lock16Svg from '@/icons/lock-16.svg';
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
-import AuthState from '@/features/auth-state';
+import AuthState from '@/features/auth/user-menu';
 
 const Header = () => {
     return (

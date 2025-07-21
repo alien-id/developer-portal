@@ -1,4 +1,4 @@
-import Authenticator from "@/features/authenticator";
+import { Authenticator } from "@/features/auth";
 
 const SignInPage = () => {
     return (
