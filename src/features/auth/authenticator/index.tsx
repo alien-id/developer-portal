@@ -210,12 +210,17 @@ function Authenticator() {
                 </div>
             </div>
 
-            {deepLink && (
-                <Link href={deepLink} className="text-text-secondary text-xs p-1 mb-4">
-                    Direct link
-                </Link>
-            )}
-
+            <Link
+                href={deepLink}
+                className={
+                    cn(
+                        "text-text-secondary text-xs p-1",
+                        !!deepLink ? "visible" : "invisible"
+                    )
+                }
+            >
+                Direct link
+            </Link>
         </div>
     )
 }

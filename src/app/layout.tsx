@@ -18,9 +18,10 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       dir="ltr"
       suppressHydrationWarning
       data-theme="dark"
+      className="h-full"
     >
       <body
-        className={`${booton.className} ${booton.variable} antialiased bg-bg-primary text-text-primary`}
+        className={`${booton.className} ${booton.variable} h-full antialiased bg-bg-primary text-text-primary flex flex-col`}
       >
         <SWRConfig
           value={{
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         </SWRConfig>
 
         <Toaster />
+
       </body>
     </html>
   );

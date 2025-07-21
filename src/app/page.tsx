@@ -188,8 +188,8 @@ const IndexPage: FC = () => {
                   </feMerge>
                 </filter>
                 <linearGradient id="paint0_linear_207_8250" x1="145.761" y1="1" x2="145.761" y2="64.1037" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="white" />
-                  <stop offset="1" stop-color="#666666" />
+                  <stop stopColor="white" />
+                  <stop offset="1" stopColor="#666666" />
                 </linearGradient>
               </defs>
             </svg>

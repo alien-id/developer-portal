@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react"
 
 const LoginLayout = ({ children }: PropsWithChildren) => {
     return (
-        <section className="w-full h-dvh flex flex-col gap-3">
+        <section className="w-full h-full flex flex-col gap-3">
             <Header />
 
             {children}
