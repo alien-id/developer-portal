@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
 import dynamic from 'next/dynamic';
 import Link from "next/link";
-import { AuthState } from "@/features";
+import { UserMenu } from "@/features";
 import 'nextra-theme-docs/style.css'
 
 
@@ -41,7 +41,7 @@ const navbar = (
         }
         projectLink={'https://github.com/alien-id/sso-sdk-js'}
     >
-        <AuthState />
+        <UserMenu />
     </NextraNavbar>
 )
 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import Lock16Svg from '@/icons/lock-16.svg';
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
-import AuthState from '@/features/auth/user-menu';
+import { UserMenu } from '@/features';
 
 const Header = () => {
     return (
@@ -22,7 +22,7 @@ const Header = () => {
                         Documentation
                     </Link>
 
-                    <AuthState />
+                    <UserMenu />
                 </div>
             </div>
         </header>

@@ -4,7 +4,6 @@ import QRCodeStyling from "qr-code-styling";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Logo2xGraySvg from '@/icons/logo-2x-gray.svg';
 import Success24Svg from '@/icons/success-24.svg';
 import Clear24Svg from '@/icons/clear-24.svg';
 import X16SuccessSvg from '@/icons/x-16-success.svg';
@@ -60,7 +59,7 @@ function Authenticator() {
 
                 setUser(user);
 
-                sleep(3000);
+                await sleep(3000);
 
                 router.push('/dashboard/sso');
             } catch (error) {
@@ -79,30 +78,25 @@ function Authenticator() {
 
     if (isError) {
         return (
-            <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-9 grid grid-rows-[auto_1fr] place-items-center">
-                <Logo2xGraySvg className="shrink-0" />
-
-                <div className="flex flex-col items-center justify-center">
-                    <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-red-700 after:rounded-full after:blur-2xl">
-                        <Clear24Svg className="" />
-                    </div>
-
-                    <p className="text-center text-text-primary text-2xl leading-loose mb-4">
-                        Verification request<br />
-                        not confirmed
-                    </p>
-
-                    <button
-                        onClick={handleRefresh}
-                        className="px-4 py-2 bg-button-secondary-bg-active rounded-full flex justify-center items-center gap-1 cursor-pointer">
-                        <Refresh16Svg />
-
-                        <span className="justify-center text-text-primary text-base leading-snug">
-                            Try again
-                        </span>
-                    </button>
+            <div className="h-full w-full flex flex-col items-center justify-center">
+                <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-red-700 after:rounded-full after:blur-2xl">
+                    <Clear24Svg className="" />
                 </div>
 
+                <p className="text-center text-text-primary text-2xl leading-loose mb-4">
+                    Verification request<br />
+                    not confirmed
+                </p>
+
+                <button
+                    onClick={handleRefresh}
+                    className="px-4 py-2 bg-button-secondary-bg-active rounded-full flex justify-center items-center gap-1 cursor-pointer">
+                    <Refresh16Svg />
+
+                    <span className="justify-center text-text-primary text-base leading-snug">
+                        Try again
+                    </span>
+                </button>
             </div>
         )
     }
@@ -111,45 +105,38 @@ function Authenticator() {
         const fullnameInitials = getInitialsFromFullName(user.app_callback_payload.full_name || '');
 
         return (
-            <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-9 grid grid-rows-[auto_1fr] place-items-center">
-                <Logo2xGraySvg className="shrink-0" />
-
-                <div className="flex flex-col items-center justify-center">
-                    <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
-                        <Success24Svg className="" />
-                    </div>
-
-                    <p className="text-center text-text-primary text-2xl leading-loose mb-4">
-                        Your Alien ID<br />
-                        authentication was successful
-                    </p>
-
-                    <div className="pl-2 pr-4 py-2 bg-bg-secondary rounded-[34px] inline-flex justify-start items-center gap-3">
-                        <Avatar className="w-7 h-7">
-                            <AvatarImage
-                                src={`https://avatar.iran.liara.run/public`}
-                                alt={fullnameInitials || "AU"}
-                            />
-
-                            <AvatarFallback>
-                                {fullnameInitials || "AU"}
-                            </AvatarFallback>
-                        </Avatar>
-
-                        <div className="justify-start text-text-primary text-sm  leading-tight">
-                            {user.app_callback_payload.full_name || 'Anonymous User'}
-                        </div>
-                    </div>
+            <div className="h-full w-full flex flex-col items-center justify-center">
+                <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
+                    <Success24Svg className="" />
                 </div>
 
+                <p className="text-center text-text-primary text-2xl leading-loose mb-4">
+                    Your Alien ID<br />
+                    authentication was successful
+                </p>
+
+                <div className="pl-2 pr-4 py-2 bg-bg-secondary rounded-[34px] inline-flex justify-start items-center gap-3">
+                    <Avatar className="w-7 h-7">
+                        <AvatarImage
+                            src={`https://avatar.iran.liara.run/public`}
+                            alt={fullnameInitials || "AU"}
+                        />
+
+                        <AvatarFallback>
+                            {fullnameInitials || "AU"}
+                        </AvatarFallback>
+                    </Avatar>
+
+                    <div className="justify-start text-text-primary text-sm  leading-tight">
+                        {user.app_callback_payload.full_name || 'Anonymous User'}
+                    </div>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="w-[696px] h-full rounded-[40px] mx-auto border border-stroke-default p-4 flex flex-col items-center">
-            <Logo2xGraySvg className="mb-6 shrink-0" />
-
+        <div className="h-full w-full flex flex-col items-center justify-center">
             <p className="text-text-primary text-2xl mb-10 text-center">
                 Scan with Alien App <br />
                 to sign in to Developer Portal

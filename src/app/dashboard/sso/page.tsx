@@ -1,5 +1,6 @@
 'use client';
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardSsoIntroduction, DashboardSsoProvidersList, GetProvidersResponse } from "@/features";
 import axiosInstance from "@/lib/axios";
 import { AxiosError } from "axios";
@@ -21,7 +22,7 @@ const DashboardSsoPage = () => {
 
     if (providersSwr.error) return null;
 
-    if (providersSwr.isLoading) return null;
+    if (providersSwr.isLoading) return <Skeleton className="h-full w-full rounded-xl" />;
 
     if (!providersSwr.data?.providers || providersSwr.data.providers.length === 0) return <DashboardSsoIntroduction />
 

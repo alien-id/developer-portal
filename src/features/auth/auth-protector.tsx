@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useAuth from "./use-auth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function AuthProtector({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -15,7 +16,7 @@ function AuthProtector({ children }: { children: React.ReactNode }) {
         }
     }, [status, router]);
 
-    if (status === 'loading') return <p>Checking auth...</p>;
+    if (true || status === 'loading') return <Skeleton className="h-full w-full rounded-xl" />;
 
     if (status === 'unauthenticated') return null;
 

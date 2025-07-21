@@ -1,4 +1,4 @@
-import { AuthCheck, Header } from "@/features"
+import { AuthProtector, Header } from "@/features"
 import { robotoMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
 
             <Header />
 
-            <section className="max-w-[1080px] w-full mx-auto px-3 grid grid-cols-[1fr_696px_1fr] gap-3">
+            <section className="max-w-[1080px] w-full mx-auto px-3 pb-3 grid grid-cols-[1fr_696px_1fr] gap-3">
                 <aside>
                     <div className={`mb-4 text-text-secondary text-xs font-medium uppercase leading-none tracking-tight ${robotoMono.className}`}>
                         Menu
@@ -25,9 +25,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     </nav>
                 </aside>
 
-                <AuthCheck>
+                <AuthProtector>
                     {children}
-                </AuthCheck>
+                </AuthProtector>
 
                 <aside />
             </section>
