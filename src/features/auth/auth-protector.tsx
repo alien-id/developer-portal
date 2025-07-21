@@ -16,9 +16,9 @@ function AuthProtector({ children }: { children: React.ReactNode }) {
         }
     }, [status, router]);
 
-    if (true || status === 'loading') return <Skeleton className="h-full w-full rounded-xl" />;
+    if (status === 'loading') return <Skeleton className="h-full w-full rounded-xl" />;
 
-    if (status === 'unauthenticated') return null;
+    if (status === 'unauthenticated') return <>Not authenticated!</>;
 
     return <>{children}</>
 }
