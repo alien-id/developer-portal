@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 }`
 
-export const codeForClient = (provider_address: string, provider_private_key: string) =>
+export const codeForClient = () =>
     `import { AlienSsoSdkClient } from 'alien-sso-sdk-client-js'
 
 ...

@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
             status: 500,
         })
 
-        const res = await fetch(`https://sso.alien-api.com/app_callback/${id}`, {
+        await fetch(`https://sso.alien-api.com/app_callback/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

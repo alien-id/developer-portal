@@ -449,7 +449,7 @@ const DashboardCreateProvider = () => {
                                             language="ts"
                                             style={oneDark}
                                         >
-                                            {codeForClient(createdProvider.provider_address, createdProvider.provider_private_key)}
+                                            {codeForClient()}
                                         </SyntaxHighlighter>
                                     </>
                                 ) : (
