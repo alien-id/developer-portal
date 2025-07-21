@@ -14,7 +14,7 @@ function UserMenu() {
 
     if (status === 'unauthenticated' || !user) return (
         <Link href={'/sign-in'}>
-            <div className="h-7 px-2 py-1 bg-button-secondary-bg-active rounded-4xl flex justify-center items-center gap-2">
+            <div className="h-7 px-2 py-1 bg-button-secondary-bg-active rounded-4xl flex justify-center items-center gap-2 shrink-0">
                 <div className="text-text-secondary text-sm leading-none">
                     Sign in
                 </div>

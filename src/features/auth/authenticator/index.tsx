@@ -61,7 +61,7 @@ function Authenticator() {
 
                 await sleep(3000);
 
-                router.push('/dashboard/sso');
+                // router.push('/dashboard/sso');
             } catch (error) {
                 console.log("initAuthorization error: ", error);
 
@@ -78,7 +78,7 @@ function Authenticator() {
 
     if (isError) {
         return (
-            <div className="h-full w-full flex flex-col items-center justify-center">
+            <div className="h-full w-full grid justify-center place-content-center place-items-center">
                 <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-red-700 after:rounded-full after:blur-2xl">
                     <Clear24Svg className="" />
                 </div>
@@ -105,7 +105,7 @@ function Authenticator() {
         const fullnameInitials = getInitialsFromFullName(user.app_callback_payload.full_name || '');
 
         return (
-            <div className="h-full w-full flex flex-col items-center justify-center">
+            <div className="h-full w-full grid justify-center place-content-center place-items-center">
                 <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
                     <Success24Svg className="" />
                 </div>
@@ -135,8 +135,22 @@ function Authenticator() {
         )
     }
 
+    const handleMockScan = () => {
+        if (!deepLink) return;
+
+        fetch('/api/mock-callback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deep_link: deepLink,
+            }),
+        })
+    }
+
     return (
-        <div className="h-full w-full flex flex-col items-center justify-center">
+        <div className="h-full w-full grid justify-center place-content-center place-items-center">
             <p className="text-text-primary text-2xl mb-10 text-center">
                 Scan with Alien App <br />
                 to sign in to Developer Portal
@@ -221,6 +235,18 @@ function Authenticator() {
             >
                 Direct link
             </Link>
+
+            <button
+                className={
+                    cn(
+                        "text-text-secondary text-xs p-1 cursor-pointer",
+                        !!deepLink ? "visible" : "invisible"
+                    )
+                }
+                onClick={handleMockScan}
+            >
+                Mock scan
+            </button>
         </div>
     )
 }
