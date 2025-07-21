@@ -1,5 +1,5 @@
 export const codeForServer = (provider_address: string, provider_private_key: string) =>
-    `import { AlienSsoSdkServer } from '@alien/sso-sdk-server-js'
+    `import { AlienSsoSdkServer } from 'alien-sso-sdk-server-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 const alienSsoSdkServer = new AlienSsoSdkServer({
@@ -29,17 +29,40 @@ export async function POST(request: NextRequest) {
 }`
 
 export const codeForClient = (provider_address: string, provider_private_key: string) =>
-    `const alienSsoSdkClient = new AlienSsoSdkClient({
-    providerAddress: "${provider_address}",
-    providerPrivateKey: "${provider_private_key}",
-    ssoBaseUrl: 'https://sso.alien-api.com',
-    serverSdkBaseUrl: 'http://localhost:3001/api',
+    `import { AlienSsoSdkClient } from 'alien-sso-sdk-client-js'
+
+...
+
+const alienSsoSdkClient = new AlienSsoSdkClient({
+  ssoBaseUrl: 'https://sso.alien-api.com',
+  serverSdkBaseUrl: '/api',
 });
 
-const { deep_link, polling_code } = await alienSsoSdkClient.authorize();
+...
 
-const autorizationCode = await alienSsoSdkClient.pollForAuthorization(polling_code);
+const handleLogin = async () => {
+    try {
+        const { deep_link, polling_code } = await alienSsoSdkClient.authorize();
+        console.log({ deep_link, polling_code });
 
-const accessToken = await alienSsoSdkClient.exchangeCode(autorizationCode);
+        setDeepLink(deep_link);
 
-const isValid = await alienSsoSdkClient.verifyToken();`
+        const autorizationCode = await alienSsoSdkClient.pollForAuthorization(polling_code);
+
+        console.log({ autorizationCode });
+
+        if (!autorizationCode) return;
+
+        const accessToken = await alienSsoSdkClient.exchangeCode(autorizationCode);
+        console.log({ accessToken });
+
+        if (!accessToken) return;
+
+        const isValid = await alienSsoSdkClient.verifyToken();
+        console.log({ isValid });
+
+        setIsAuthorized(isValid);
+    } catch (error) {
+        console.log('handleLogin', error);
+    }
+}`
