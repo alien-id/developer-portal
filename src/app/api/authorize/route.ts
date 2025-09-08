@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import alienSsoSdkServer from '@/lib/alien-sso-sdk-server';
+import { alienSsoSdkServer } from '@/lib/alienSsoSdkServer';
 
 export async function POST(request: NextRequest) {
     try {

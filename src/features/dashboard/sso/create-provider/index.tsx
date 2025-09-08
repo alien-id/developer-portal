@@ -9,7 +9,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/custom/custom-accordion"
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import FloatingLabelInput from "@/components/custom/custom-input";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/form"
 import { CreatedProvider, CreateProviderRequestPayload } from "./types";
 import useSWRMutation from "swr/mutation";
-import axiosInstance from "@/lib/axios";
 import Spinner24Svg from '@/icons/spinner-24.svg';
 import Keyline16Svg from '@/icons/keyline-24.svg';
 
@@ -36,20 +35,24 @@ import CopyField from "@/components/custom/copy-field";
 import { cn, formatSecret } from "@/lib/utils";
 import useSWR from "swr";
 import { DownloadIcon } from "lucide-react";
+import { useAxios } from "@/hooks/useAxios";
 
-async function createProvider(url: string, payload: CreateProviderRequestPayload) {
-    return (await axiosInstance.post('/providers', payload, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })).data;
-}
 
 const DashboardCreateProvider = () => {
+    const axios = useAxios();
     const [isDialogOpened, setIsDialogOpened] = useState(false);
     const [accordionCurrent, setAccordionCurrent] = useState("1");
-
     const [createdProvider, setCreatedProvider] = useState<CreatedProvider | null>(null);
+
+    const createProvider = useMemo(() => {
+        return async (url: string, payload: CreateProviderRequestPayload) => {
+            return (await axios.post('/providers', payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })).data;
+        }
+    }, [axios])
 
     const { mutate } = useSWR(`/providers`);
 

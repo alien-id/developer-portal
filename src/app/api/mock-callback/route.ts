@@ -24,17 +24,23 @@ export async function POST(request: NextRequest) {
             status: 500,
         })
 
-        await fetch(`https://sso.alien-api.com/app_callback/${id}`, {
+        const res = await fetch(`${process.env.ALIEN_SSO_ROUTER_URL}/app_callback/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "payload": "{\"full_name\":\"aleksei zasulskii\"}",
-                "session_signature": "9E4F852A02991B54F90F7B4163305A7FA1DC91925D721C35F858F770164BD59EE451BE518D8AC22DDC96C77E66EB5C181B75CC1E771BE30633115452C458A605",
-                "session_address": "00000001010000000000000100000000"
+                "session_signature_seed": "tcCQpxmvM7C4VnZXCuSgCa4fFIyZhkDp",
+                "session_signature": "DE735FFF3CA2E29F528BA3E7B4FBBFC5B51F17F43C6B9BB14F2BC5EF0528277449ED33718C1500B14BBAB83602B6CAC35DA61100658EADFC6BC4E762F47ED60F",
+                "session_address": "00000001010000000000000200000000"
             })
         })
+
+        if (!res.ok) {
+            throw new Error(
+              `SSO Router Authorization failed: ${res.status} ${res.statusText} ${await res.text()}`,
+            );
+        }
 
         return NextResponse.json({
             status: 200

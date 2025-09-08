@@ -6,8 +6,8 @@ import { PropsWithChildren } from "react";
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
 import dynamic from 'next/dynamic';
 import Link from "next/link";
-import { UserMenu } from "@/features";
 import 'nextra-theme-docs/style.css'
+import { UserMenu } from "@/components/header/UserMenu";
 
 
 const NextraLayout = dynamic(() =>

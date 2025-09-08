@@ -1,11 +1,13 @@
+'use client';
+
 import Link from 'next/link'
 
 import Lock16Svg from '@/icons/lock-16.svg';
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
-import { UserMenu } from '@/features';
+import { UserMenu } from "@/components/header/UserMenu";
 import { cn } from '@/lib/utils';
 
-const Header = () => {
+export const Header = () => {
     return (
         <header>
             <div className="max-w-[1080px] w-full h-[60px] mx-auto px-3 flex flex-row items-center">
@@ -36,5 +38,3 @@ const Header = () => {
         </header>
     )
 }
-
-export default Header;

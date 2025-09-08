@@ -3,8 +3,11 @@ import { PropsWithChildren } from "react";
 import { booton } from "@/fonts/fonts";
 import { Toaster } from "@/components/ui/sonner"
 import { SWRConfig } from "swr";
+import { AlienSsoProvider } from '@alien_org/sso-sdk-react'
 
 import "./globals.css";
+import { alienSsoSdkClientConfig } from "@/config/alienSsoSdkClient";
+import {Providers} from "@/app/providers";
 
 export const metadata: Metadata = {
   title: "Developer Portal | Alien",
@@ -23,19 +26,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       <body
         className={`${booton.className} ${booton.variable} h-full antialiased bg-bg-primary text-text-primary flex flex-col`}
       >
-        <SWRConfig
-          value={{
-            revalidateOnFocus: false,
-            revalidateIfStale: false,
-            revalidateOnReconnect: false,
-          }}
-        >
-
-          {children}
-        </SWRConfig>
-
-        <Toaster />
-
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

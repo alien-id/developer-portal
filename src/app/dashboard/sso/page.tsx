@@ -2,17 +2,17 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardSsoIntroduction, DashboardSsoProvidersList, GetProvidersResponse } from "@/features";
-import axiosInstance from "@/lib/axios";
+import { useAxios } from "@/hooks/useAxios";
 import { AxiosError } from "axios";
 import { memo } from "react";
 import useSWR from "swr";
 
-const providersFetcher = (url: string) => axiosInstance.get(url).then(res => res.data);
-
 const DashboardSsoPage = () => {
+    const axios = useAxios();
+
     const providersSwr = useSWR<GetProvidersResponse, AxiosError>(
         `/providers`,
-        providersFetcher,
+        (url: string) => axios.get(url).then(res => res.data),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,

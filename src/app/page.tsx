@@ -1,18 +1,19 @@
-import type { Metadata } from 'next'
+'use client';
+
 import { Link } from 'nextra-theme-docs'
-import { Footer, Header } from '@/features'
+import { Header } from "@/components/header";
+import { Footer } from '@/components/footer'
 import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
 import Logo16Svg from '@/icons/logo-16.svg';
 import { AnimatedSection } from '@/components/framer-motion'
-
-export const metadata: Metadata = {
-  description:
-    'Build fast, customizable, and content-rich websites with Nextra. Powered by Next.js, it offers seamless Markdown support, customizable themes, file conventions, and easy integration with MDX, making it perfect for documentation, blogs, and static websites.'
-}
+import Image from 'next/image'
+import { useAuth } from '@alien_org/sso-sdk-react'
 
 const IndexPage: FC = () => {
+  const { auth } = useAuth()
+
   return (
     <section className='relative bg-[url(/bg-blurs-top.png)] bg-repeat-x bg-position-[50%_-45px]'>
       <Header />
@@ -36,16 +37,29 @@ const IndexPage: FC = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 ">
 
-            <Link href='/sign-in'>
-              <Button
-                variant={'brand'}
-                className='text-text-primary text-base leading-snug px-10 py-2'
-              >
-                Get started
+            {auth.isAuthenticated ? (
+              <Link href='/dashboard/sso'>
+                <Button
+                  variant={'brand'}
+                  className='text-text-primary text-base leading-snug px-10 py-2'
+                >
+                  Go to Dashboard
 
-                <ArrowRight16Svg className="text-neutral-500" />
-              </Button>
-            </Link>
+                  <ArrowRight16Svg className="text-neutral-500" />
+                </Button>
+              </Link>
+            ) : (
+              <Link href='/sign-in'>
+                <Button
+                  variant={'brand'}
+                  className='text-text-primary text-base leading-snug px-10 py-2'
+                >
+                  Get started
+
+                  <ArrowRight16Svg className="text-neutral-500" />
+                </Button>
+              </Link>
+            )}
 
             <Link href='/docs'>
               <Button
@@ -85,6 +99,9 @@ const IndexPage: FC = () => {
 
               <div className='grid grid-cols-2 gap-10'>
                 <div>
+
+                  <Image className="mb-[20px]" src='/model-avatar.png' alt='' width={44} height={46} />
+
                   <h4 className='text-text-primary text-base leading-normal mb-2'>
                     Built for security
                   </h4>
@@ -95,6 +112,8 @@ const IndexPage: FC = () => {
                 </div>
 
                 <div>
+                  <Image className="mb-[20px]" src='/model-avatar.png' alt='' width={44} height={46} />
+
                   <h4 className='text-text-primary text-base leading-normal mb-2'>
                     Anonymous
                   </h4>
@@ -105,6 +124,8 @@ const IndexPage: FC = () => {
                 </div>
 
                 <div>
+                  <Image className="mb-[20px]" src='/model-avatar.png' alt='' width={44} height={46} />
+
                   <h4 className='text-text-primary text-base leading-normal mb-2'>
                     Developer-first
                   </h4>
@@ -115,6 +136,8 @@ const IndexPage: FC = () => {
                 </div>
 
                 <div>
+                  <Image className="mb-[20px]" src='/model-avatar.png' alt='' width={44} height={46} />
+
                   <h4 className='text-text-primary text-base leading-normal mb-2'>
                     Fast, seamless integration
                   </h4>

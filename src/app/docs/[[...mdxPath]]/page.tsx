@@ -1,5 +1,5 @@
 import { generateStaticParamsFor, importPage } from 'nextra/pages'
-import { useMDXComponents as getMDXComponents } from '@/mdx-components'
+import { useMDXComponents as getThemeComponents } from 'nextra-theme-docs'
 
 export const generateStaticParams = generateStaticParamsFor('mdxPath');
 
@@ -17,7 +17,7 @@ export async function generateMetadata(props: PageProps) {
     return metadata;
 }
 
-const Wrapper = getMDXComponents().wrapper
+const Wrapper = getThemeComponents().wrapper
 
 async function Page(props: PageProps) {
     const params = await props.params
@@ -28,8 +28,9 @@ async function Page(props: PageProps) {
 
     return (
         <Wrapper
-            toc={toc}
-            metadata={metadata}
+          toc={toc}
+          metadata={metadata}
+          sourceCode={''}
         >
             <MDXContent {...props} params={params} />
         </Wrapper>

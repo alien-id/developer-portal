@@ -1,4 +1,5 @@
-import { AuthProtector, Header } from "@/features"
+import { AuthProtector } from "@/components/auth-protector";
+import { Header } from "@/components/header";
 import { robotoMono } from "@/fonts/fonts"
 import Link from "next/link"
 import { PropsWithChildren } from "react"

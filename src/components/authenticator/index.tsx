@@ -10,21 +10,22 @@ import X16SuccessSvg from '@/icons/x-16-success.svg';
 import Refresh16Svg from '@/icons/refresh-16.svg';
 
 import Spinner24Svg from '@/icons/spinner-24.svg';
-import alienSsoSdkClient from "@/lib/alien-sso-sdk-client";
-import { cn, getInitialsFromFullName, sleep } from "@/lib/utils";
+import { cn, sleep } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types";
 import { qrOptions } from "./config";
+import { useAuth } from "@alien_org/sso-sdk-react";
+import {Button} from "@/components/ui/button";
+import ArrowRight16Svg from "@/icons/arrow-right-16.svg";
 
-function Authenticator() {
+export const Authenticator = () => {
     const router = useRouter();
+    const { getAuthDeeplink, pollAuth, exchangeToken, auth } = useAuth()
+    const [isLoading, setIsLoading] = useState(false);
 
     const ref = useRef(null);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
     const [deepLink, setDeepLink] = useState<string>('');
-    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const qrCode = new QRCodeStyling(qrOptions);
@@ -33,9 +34,13 @@ function Authenticator() {
             qrCode.append(ref.current);
         }
 
-        async function initAuthorization() {
+        (async () => {
             try {
-                const { deep_link, polling_code } = await alienSsoSdkClient.authorize();
+                setIsLoading(true);
+                const { deep_link, polling_code } = await getAuthDeeplink();
+                setIsLoading(false);
+
+                console.log(deep_link)
 
                 setDeepLink(deep_link);
 
@@ -43,53 +48,35 @@ function Authenticator() {
                     data: deep_link,
                 });
 
+                const authorizationCode = await pollAuth(polling_code);
+                if (!authorizationCode) throw new Error("Unauthorized");
+
+
+                setIsLoading(true);
+                const accessToken = await exchangeToken(authorizationCode);
                 setIsLoading(false);
-
-                // rework to object with autorizationCode
-                const autorizationCode = await alienSsoSdkClient.pollForAuthorization(polling_code);
-
-                if (!autorizationCode) return;
-
-                // rework to object with accessToken
-                const accessToken = await alienSsoSdkClient.exchangeCode(autorizationCode);
-
-                if (!accessToken) return;
-
-                const user = alienSsoSdkClient.getUser();
-
-                setUser(user);
-
-                await sleep(3000);
-
-                router.push('/dashboard/sso');
+                if (!accessToken) throw new Error("Unauthorized");
             } catch (error) {
                 console.log("initAuthorization error: ", error);
 
                 setIsError(true);
             }
-        }
-
-        initAuthorization();
+        })()
     }, [ref, router]);
-
-    const handleRefresh = () => {
-        window.location.reload();
-    }
 
     if (isError) {
         return (
             <div className="h-full w-full grid justify-center place-content-center place-items-center">
-                <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-red-700 after:rounded-full after:blur-2xl">
+                <div className="mb-5 relative">
                     <Clear24Svg className="" />
                 </div>
 
                 <p className="text-center text-text-primary text-2xl leading-loose mb-4">
-                    Verification request<br />
-                    not confirmed
+                    Verification failed
                 </p>
 
                 <button
-                    onClick={handleRefresh}
+                    onClick={() => window.location.reload()}
                     className="px-4 py-2 bg-button-secondary-bg-active rounded-full flex justify-center items-center gap-1 cursor-pointer">
                     <Refresh16Svg />
 
@@ -101,13 +88,11 @@ function Authenticator() {
         )
     }
 
-    if (user) {
-        const fullnameInitials = getInitialsFromFullName(user.app_callback_payload.full_name || '');
-
+    if (auth.tokenInfo) {
         return (
             <div className="h-full w-full grid justify-center place-content-center place-items-center">
                 <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
-                    <Success24Svg className="" />
+                    <Success24Svg />
                 </div>
 
                 <p className="text-center text-text-primary text-2xl leading-loose mb-4">
@@ -119,18 +104,29 @@ function Authenticator() {
                     <Avatar className="w-7 h-7">
                         <AvatarImage
                             src={`https://avatar.iran.liara.run/public`}
-                            alt={fullnameInitials || "AU"}
+                            alt={auth.tokenInfo.app_callback_session_address}
                         />
 
                         <AvatarFallback>
-                            {fullnameInitials || "AU"}
+                            {auth.tokenInfo.app_callback_session_address}
                         </AvatarFallback>
                     </Avatar>
 
                     <div className="justify-start text-text-primary text-sm  leading-tight">
-                        {user.app_callback_payload.full_name || 'Anonymous User'}
+                        {auth.tokenInfo.app_callback_session_address}
                     </div>
                 </div>
+
+                <Link href='/dashboard/sso' className="mt-[24px]">
+                    <Button
+                      variant={'brand'}
+                      className='text-text-primary text-base leading-snug px-10 py-2'
+                    >
+                        Go to Dashboard
+
+                        <ArrowRight16Svg className="text-neutral-500" />
+                    </Button>
+                </Link>
             </div>
         )
     }
@@ -151,24 +147,25 @@ function Authenticator() {
 
     return (
         <div className="h-full w-full grid justify-center place-content-center place-items-center">
-            <p className="text-text-primary text-2xl mb-10 text-center">
+            <p className="text-text-primary text-2xl mb-[40px] text-center">
                 Scan with Alien App <br />
                 to sign in to Developer Portal
             </p>
 
-            <div className="max-w-80 max-h-80 w-80 h-80 p-6 mb-10 rounded-[32px] relative border border-stroke-default">
+            <div className="max-w-[340px] max-h-[340px] p-[24px] mb-[40px] rounded-[32px] relative border border-stroke-default">
                 {isLoading && <Spinner24Svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin" />}
 
                 <div
                     ref={ref}
                     className={cn(
                         isLoading && "blur-md",
-                        "max-w-68 max-h-68 w-68 h-68 flex"
+                      "w-full h-full grid place-items-center overflow-hidden",
+                        "[&>*]:w-full [&>*]:h-full [&>*]:max-w-full [&>*]:max-h-full [&>*]:object-contain"
                     )}
                 />
             </div>
 
-            <div className="w-[476px] p-4 bg-bg-secondary rounded-2xl">
+            <div className="max-w-[476px] p-4 bg-bg-secondary rounded-2xl">
                 <p className="text-text-secondary text-sm mb-4">
                     What is Alien ID?
                 </p>
@@ -250,5 +247,3 @@ function Authenticator() {
         </div>
     )
 }
-
-export default Authenticator;
