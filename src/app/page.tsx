@@ -1,8 +1,8 @@
 'use client';
 
 import { Link } from 'nextra-theme-docs'
-import { Header } from "@/components/header";
-import { Footer } from '@/components/footer'
+import { Header } from "@/components/Header";
+import { Footer } from '@/components/Footer'
 import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';

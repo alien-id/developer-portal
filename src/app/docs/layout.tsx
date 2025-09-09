@@ -7,7 +7,7 @@ import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
 import dynamic from 'next/dynamic';
 import Link from "next/link";
 import 'nextra-theme-docs/style.css'
-import { UserMenu } from "@/components/header/UserMenu";
+import { UserMenu } from "@/components/UserMenu";
 
 
 const NextraLayout = dynamic(() =>

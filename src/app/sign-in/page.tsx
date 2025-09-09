@@ -1,9 +1,9 @@
 import Logo2xGraySvg from '@/icons/logo-2x-gray.svg';
-import { Authenticator } from "@/components/authenticator";
 import { cn } from "@/lib/utils";
 import Lock16Svg from "@/icons/lock-16.svg";
 import Link from "next/link";
 import ArrowRightSvg from "@/icons/arrow-right-16.svg";
+import { AuthForm } from "@/components/AuthForm";
 
 const SignInPage = () => {
     return (
@@ -32,7 +32,7 @@ const SignInPage = () => {
             <div className="w-full min-w-[696px] min-h-[70vh] mb-[18px] p-[35px] rounded-[40px] border border-stroke-default grid grid-rows-[auto_1fr] place-items-center">
                 <Logo2xGraySvg className="mb-[23px] shrink-0" />
 
-                <Authenticator />
+                <AuthForm />
             </div>
         </main>
     )
