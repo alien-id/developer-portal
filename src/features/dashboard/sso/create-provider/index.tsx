@@ -32,11 +32,10 @@ import Keyline16Svg from '@/icons/keyline-24.svg';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import { codeForClient, codeForServer } from './constants';
+import { codeForButton, codeForClient, codeForServer } from './constants';
 import CopyField from '@/components/custom/copy-field';
 import { cn, formatSecret } from '@/lib/utils';
 import useSWR from 'swr';
-import { DownloadIcon } from 'lucide-react';
 import { useAxios } from '@/hooks/useAxios';
 import { useQuery } from 'react-query';
 import QRCodeStyling, { Options } from 'qr-code-styling';
@@ -194,6 +193,7 @@ const DashboardCreateProvider = () => {
     enabled: Boolean(deeplink?.polling_code),
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
+    retry: false,
     onError: (err) => setError(err as string),
   });
 
@@ -204,8 +204,14 @@ const DashboardCreateProvider = () => {
     }
   }, [pollData]);
 
+  useEffect(() => {
+    onReset();
+  }, [isDialogOpened]);
+
   const onReset = () => {
     form.reset();
+    setDeeplink(undefined);
+    setProvider(undefined);
     setAccordionCurrent('1');
     setError(undefined);
   };
@@ -237,7 +243,7 @@ const DashboardCreateProvider = () => {
 
         <DialogBody>
           {error ? (
-            <div>
+            <div className="flex flex-col gap-4 mt-8">
               <p className="text-center text-text-primary text-2xl leading-loose mb-4">
                 Request failed
               </p>
@@ -408,13 +414,13 @@ const DashboardCreateProvider = () => {
                   </div>
 
                   <span className="text-text-primary text-base leading-snug">
-                    Private key and private address
+                    Provider private key and provider address
                   </span>
                 </AccordionTrigger>
 
                 <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
                   <p className="text-text-secondary text-sm font-normals leading-tight">
-                    We generated a unique private key and private address,
+                    We generated a unique provider private key and provider address,
                     <br />
                     which are required to initialize and authenticate your integration
                   </p>
@@ -428,7 +434,7 @@ const DashboardCreateProvider = () => {
                         />
 
                         <div className="text-text-secondary text-sm font-normal leading-tight">
-                          Private address
+                          Provider address
                         </div>
                       </div>
 
@@ -439,7 +445,7 @@ const DashboardCreateProvider = () => {
                         />
 
                         <div className="text-text-secondary text-sm font-normal leading-tight">
-                          Private key
+                          Provider private key
                         </div>
                       </div>
                     </div>
@@ -487,29 +493,27 @@ const DashboardCreateProvider = () => {
 
                 <AccordionContent className="flex flex-col text-balance pl-9 pr-8 pb-2 gap-4">
                   <p className="text-text-secondary text-sm font-normals leading-tight">
-                    Add our SDKs to your project:
+                    Add our SDK to your project:
                   </p>
 
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-2 items-center">
                       <CopyField
-                        valueToCopy={'npm install @alien/sso-sdk-client-js'}
-                        valueToShow={'npm install @alien/sso-sdk-client-js'}
+                        valueToCopy={'npm install @alien_org/sso-sdk-core'}
+                        valueToShow={'npm install @alien_org/sso-sdk-core'}
                       />
-                      <a href="/alien-sso-sdk-client-js-1.0.0.tgz" download>
-                        <DownloadIcon size={'1rem'} />
-                      </a>
                     </div>
+                  </div>
 
+                  <p className="text-text-secondary text-sm font-normals leading-tight">
+                    If you use React/Next.js, also add React SDK:
+                  </p>
+                  <div>
                     <div className="flex flex-row gap-2 items-center">
                       <CopyField
-                        valueToCopy={'npm install @alien/sso-sdk-server-js'}
-                        valueToShow={'npm install @alien/sso-sdk-server-js'}
+                        valueToCopy={'npm install @alien_org/sso-sdk-react'}
+                        valueToShow={'npm install @alien_org/sso-sdk-react'}
                       />
-
-                      <a href="/alien-sso-sdk-server-js-1.0.0.tgz" download>
-                        <DownloadIcon size={'1rem'} />
-                      </a>
                     </div>
                   </div>
 
@@ -571,16 +575,7 @@ const DashboardCreateProvider = () => {
                   </div>
 
                   <SyntaxHighlighter className="w-96" wrapLongLines language="tsx" style={oneDark}>
-                    {/* {`import SignInButton from "@alien/sso-sdk-client-js"`} */}
-                    {`<button onClick={handleLogin} className="w-72 h-12 px-4 py-2 bg-button-primary-bg-active rounded-2xl flex justify-center items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-          <path d="M19.5 2C20.6046 2 21.5 2.89543 21.5 4V20C21.5 21.1046 20.6046 22 19.5 22H5.5C4.39543 22 3.5 21.1046 3.5 20V4C3.5 2.89543 4.39543 2 5.5 2H19.5ZM12.5 8.20312C9.29897 8.20312 6.59816 10.7903 5.75293 11.6934C5.5888 11.8687 5.5888 12.1313 5.75293 12.3066C6.59816 13.2097 9.29897 15.7969 12.5 15.7969C15.701 15.7969 18.4019 13.2096 19.2471 12.3066C19.4112 12.1313 19.4112 11.8687 19.2471 11.6934C18.4019 10.7904 15.701 8.20314 12.5 8.20312ZM10.665 10.9404C11.3406 9.77038 12.7104 9.29588 13.7236 9.88086C14.7368 10.4659 15.0105 11.8895 14.335 13.0596C13.6594 14.2296 12.2896 14.7041 11.2764 14.1191C10.2632 13.5341 9.98948 12.1105 10.665 10.9404Z" fill="white"/>
-      </svg>
-      
-      <div className="text-center justify-center text-text-primary text-base leading-snug">
-          Sign-in with Alien ID
-      </div>
-  </button>`}
+                    {codeForButton()}
                   </SyntaxHighlighter>
 
                   <button
@@ -628,22 +623,35 @@ const DashboardCreateProvider = () => {
 
                   {provider ? (
                     <>
+                      <p className="text-text-secondary text-sm font-normals leading-tight">
+                        Server (Node.js + Express) example:
+                      </p>
                       <SyntaxHighlighter
                         className="w-[440px]"
                         wrapLongLines
                         language="ts"
                         style={oneDark}
                       >
-                        {codeForServer(provider.provider_address!, provider.provider_private_key!)}
+                        {codeForServer(
+                          provider.provider_address!,
+                          provider.provider_private_key!,
+                          process.env.NEXT_PUBLIC_ALIEN_SSO_ROUTER_URL!,
+                        )}
                       </SyntaxHighlighter>
 
+                      <p className="text-text-secondary text-sm font-normals leading-tight">
+                        Client example:
+                      </p>
                       <SyntaxHighlighter
                         className="w-[440px]"
                         wrapLongLines
                         language="ts"
                         style={oneDark}
                       >
-                        {codeForClient()}
+                        {codeForClient(
+                          provider.provider_address!,
+                          process.env.NEXT_PUBLIC_ALIEN_SSO_ROUTER_URL!,
+                        )}
                       </SyntaxHighlighter>
                     </>
                   ) : (

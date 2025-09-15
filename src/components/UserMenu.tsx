@@ -28,7 +28,9 @@ export const UserMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar />
+        <button>
+          <Avatar />
+        </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>

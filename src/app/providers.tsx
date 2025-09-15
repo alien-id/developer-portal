@@ -3,11 +3,15 @@
 import { AlienSsoProvider } from '@alien_org/sso-sdk-react';
 import { SWRConfig } from 'swr';
 import { Toaster } from '@/components/ui/sonner';
-import { alienSsoSdkClientConfig } from '@/config/alienSsoSdkClient';
 import { AuthVerifier } from '@/components/AuthVerifier';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
+
+const alienSsoSdkClientConfig = {
+  ssoBaseUrl: process.env.NEXT_PUBLIC_ALIEN_SSO_ROUTER_URL!,
+  serverSdkBaseUrl: '/api',
+};
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
