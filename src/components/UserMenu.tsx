@@ -1,35 +1,62 @@
 'use client';
 
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth } from '@alien_org/sso-sdk-react'
+import Link from 'next/link';
+import { useAuth } from '@alien_org/sso-sdk-react';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuPortal,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@radix-ui/react-dropdown-menu';
+import { cn } from '@/lib/utils';
+import { Avatar } from '@/components/Avatar';
 
 export const UserMenu = () => {
-    const { auth } = useAuth();
+  const { auth, logout } = useAuth();
 
-    if (!auth.isAuthenticated || !auth.tokenInfo) {
-      return (
-        <Link href={'/sign-in'}>
-          <div
-            className="h-7 px-2 py-1 bg-button-secondary-bg-active rounded-4xl flex justify-center items-center gap-2 shrink-0">
-            <div className="text-text-secondary text-sm leading-none">
-              Sign in
-            </div>
-          </div>
-        </Link>
-      );
-    }
-
+  if (!auth.isAuthenticated || !auth.tokenInfo) {
     return (
-        <Avatar>
-            <AvatarImage
-                src={`https://avatar.iran.liara.run/public`}
-                alt="@shadcn"
-            />
+      <Link href={'/sign-in'}>
+        <div className="h-7 px-2 py-1 bg-button-secondary-bg-active rounded-4xl flex justify-center items-center gap-2 shrink-0">
+          <div className="text-text-secondary text-sm leading-none">Sign in</div>
+        </div>
+      </Link>
+    );
+  }
 
-            <AvatarFallback>
-                {auth.tokenInfo.app_callback_session_address}
-            </AvatarFallback>
-        </Avatar>
-    )
-}
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar />
+      </DropdownMenuTrigger>
+
+      <DropdownMenuPortal>
+        <DropdownMenuContent
+          className={cn(
+            'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md',
+            'border-stroke-default bg-black',
+          )}
+          sideOffset={10}
+        >
+          <DropdownMenuItem
+            className={cn(
+              "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+            )}
+          >
+            <Link href={'/dashboard'}>Dashboard</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className={cn(
+              "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+            )}
+          >
+            <div onClick={() => logout()} className="cursor-pointer">
+              Log Out
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
+    </DropdownMenu>
+  );
+};

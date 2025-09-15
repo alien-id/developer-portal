@@ -1,8 +1,5 @@
 'use client';
-
-import QRCodeStyling from 'qr-code-styling';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Success24Svg from '@/icons/success-24.svg';
 import Clear24Svg from '@/icons/clear-24.svg';
@@ -10,20 +7,17 @@ import X16SuccessSvg from '@/icons/x-16-success.svg';
 import Refresh16Svg from '@/icons/refresh-16.svg';
 
 import Spinner24Svg from '@/icons/spinner-24.svg';
-import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAuth } from '@alien_org/sso-sdk-react';
+import { cn, formatSecret } from '@/lib/utils';
+import { useAuth, AuthorizeResponse } from '@alien_org/sso-sdk-react';
 import { Button } from '@/components/ui/button';
 import ArrowRight16Svg from '@/icons/arrow-right-16.svg';
+import QRCodeStyling from 'qr-code-styling';
+import { Avatar } from '@/components/Avatar';
 
 import { Options } from 'qr-code-styling';
 
-const defaultDeepLink =
-  'alienapp://create_session/authorize?callback_url=https%3A%2F%2Fsso.alien-api.com%2Fapp_callback%2F00cdf01f-f245-4ed4-8ecc-155c605fb24e&provider_address=00000001000000000000000300000000&expired_at=1752448776&link_signature=ab72e3fbe45513abe1c138ec9d0522a5d258a6604b389ee01bbc63a170dc41f5c0792f42f9f8e187b134021bc8dee6203c037cd80aef89e970e50620be49fb00';
-// const defaultDeepLink = "alienapp://cs/a?cb=https%3A%2F%2Fsso.alien-api.com%2Fapp_callback%2F00cdf01f-f245-4ed4-8ecc-155c605fb24e&pa=00000001000000000000000300000000&ea=1752448776&ls=ab72e3fbe45513abe1c138ec9d0522a5d258a6604b389ee01bbc63a170dc41f5c0792f42f9f8e187b134021bc8dee6203c037cd80aef89e970e50620be49fb00"
-
 const qrOptions: Partial<Options> = {
-  data: defaultDeepLink,
+  data: 'sample',
   width: 2000,
   height: 2000,
   margin: 0,
@@ -54,51 +48,46 @@ const qrOptions: Partial<Options> = {
   },
 };
 
-export const AuthForm = () => {
-  const router = useRouter();
+const AuthForm = () => {
   const { getAuthDeeplink, pollAuth, exchangeToken, auth } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const [deeplink, setDeeplink] = useState<AuthorizeResponse>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const ref = useRef(null);
-
-  const [isError, setIsError] = useState<boolean>(false);
-  const [deepLink, setDeepLink] = useState<string>('');
+  const qrInstanceRef = useRef<QRCodeStyling>(new QRCodeStyling(qrOptions));
+  const qrElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const qrCode = new QRCodeStyling(qrOptions);
-
-    if (ref.current) {
-      qrCode.append(ref.current);
+    if (qrElementRef.current) {
+      qrInstanceRef.current.append(qrElementRef.current);
     }
+  }, [qrElementRef.current]);
 
-    (async () => {
-      try {
-        setIsLoading(true);
-        const { deep_link, polling_code } = await getAuthDeeplink();
-        setIsLoading(false);
+  useEffect(() => {
+    if (deeplink?.polling_code) {
+      (async () => {
+        const authorizationCode = await pollAuth(deeplink?.polling_code);
+        await exchangeToken(authorizationCode);
+      })();
+    }
+  }, [deeplink?.polling_code]);
 
-        setDeepLink(deep_link);
+  const initAuth = async () => {
+    setIsLoading(true);
+    const deeplinkData = await getAuthDeeplink();
 
-        qrCode.update({
-          data: deep_link,
-        });
+    setDeeplink(deeplinkData);
 
-        const authorizationCode = await pollAuth(polling_code);
-        if (!authorizationCode) throw new Error('Unauthorized');
+    qrInstanceRef.current?.update({
+      data: deeplinkData.deep_link,
+    });
+    setIsLoading(false);
+  };
 
-        setIsLoading(true);
-        const accessToken = await exchangeToken(authorizationCode);
-        setIsLoading(false);
-        if (!accessToken) throw new Error('Unauthorized');
-      } catch (error) {
-        console.log('initAuthorization error: ', error);
+  useEffect(() => {
+    initAuth();
+  }, []);
 
-        setIsError(true);
-      }
-    })();
-  }, [ref, router]);
-
-  if (isError) {
+  if (auth.error) {
     return (
       <div className="h-full w-full grid justify-center place-content-center place-items-center">
         <div className="mb-5 relative">
@@ -106,11 +95,11 @@ export const AuthForm = () => {
         </div>
 
         <p className="text-center text-text-primary text-2xl leading-loose mb-4">
-          Verification failed
+          Authorization failed
         </p>
 
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => initAuth()}
           className="px-4 py-2 bg-button-secondary-bg-active rounded-full flex justify-center items-center gap-1 cursor-pointer"
         >
           <Refresh16Svg />
@@ -121,7 +110,7 @@ export const AuthForm = () => {
     );
   }
 
-  if (auth.tokenInfo) {
+  if (auth.tokenInfo && auth.isAuthenticated) {
     return (
       <div className="h-full w-full grid justify-center place-content-center place-items-center">
         <div className="mb-5 relative after:absolute after:w-14 after:h-14 after:top-0 after:left-0 after:bg-green-700 after:rounded-full after:blur-2xl">
@@ -135,17 +124,10 @@ export const AuthForm = () => {
         </p>
 
         <div className="pl-2 pr-4 py-2 bg-bg-secondary rounded-[34px] inline-flex justify-start items-center gap-3">
-          <Avatar className="w-7 h-7">
-            <AvatarImage
-              src={`https://avatar.iran.liara.run/public`}
-              alt={auth.tokenInfo.app_callback_session_address}
-            />
-
-            <AvatarFallback>{auth.tokenInfo.app_callback_session_address}</AvatarFallback>
-          </Avatar>
+          <Avatar />
 
           <div className="justify-start text-text-primary text-sm  leading-tight">
-            {auth.tokenInfo.app_callback_session_address}
+            {formatSecret(auth.tokenInfo.app_callback_session_address)}
           </div>
         </div>
 
@@ -160,15 +142,14 @@ export const AuthForm = () => {
   }
 
   const handleMockScan = () => {
-    if (!deepLink) return;
-
+    if (!deeplink) return;
     fetch('/api/mock-callback', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        deep_link: deepLink,
+        deep_link: deeplink.deep_link,
       }),
     });
   };
@@ -186,7 +167,7 @@ export const AuthForm = () => {
         )}
 
         <div
-          ref={ref}
+          ref={qrElementRef}
           className={cn(
             isLoading && 'blur-md',
             'w-full h-full grid place-items-center overflow-hidden',
@@ -252,22 +233,22 @@ export const AuthForm = () => {
         </div>
       </div>
 
-      <Link
-        href={deepLink}
-        className={cn('text-text-secondary text-xs p-1', !!deepLink ? 'visible' : 'invisible')}
-      >
-        Direct link
-      </Link>
+      {deeplink ? (
+        <>
+          <Link href={deeplink.deep_link} className={cn('text-text-secondary text-xs p-1')}>
+            Direct link
+          </Link>
 
-      <button
-        className={cn(
-          'text-text-secondary text-xs p-1 cursor-pointer',
-          !!deepLink ? 'visible' : 'invisible',
-        )}
-        onClick={handleMockScan}
-      >
-        Mock scan
-      </button>
+          <button
+            className={cn('text-text-secondary text-xs p-1 cursor-pointer')}
+            onClick={handleMockScan}
+          >
+            Mock scan
+          </button>
+        </>
+      ) : null}
     </div>
   );
 };
+
+export default AuthForm;

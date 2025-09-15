@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 import Lock16Svg from '@/icons/lock-16.svg';
 import Logo1xWhiteSvg from '@/icons/logo-1x-white.svg';
-import { UserMenu } from "@/components/UserMenu";
+import { UserMenu } from '@/components/UserMenu';
 import { cn } from '@/lib/utils';
 
 export const Header = () => {
@@ -17,24 +17,23 @@ export const Header = () => {
 
         <div
           className={cn(
-            "basis-full",
-            "flex flex-row items-center gap-3 justify-center text-sm text-text-tertiary leading-tight",
-            "hidden sm:flex"
+            'basis-full',
+            'flex flex-row items-center gap-3 justify-center text-sm text-text-tertiary leading-tight',
+            'hidden sm:flex',
           )}
         >
           <Lock16Svg />
-
           Secured by Alien
         </div>
 
-        <div className="flex flex-row items-center gap-3 justify-end basis-full">
-          <Link href={'/docs'} className=" text-white text-xs leading-none">
-            Documentation
+        <div className="flex flex-row items-center gap-5 justify-end basis-full">
+          <Link href={'/docs'} className=" text-white text-sm leading-none">
+            Docs
           </Link>
 
           <UserMenu />
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
