@@ -35,8 +35,6 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
         </aside>
 
         <AuthProtector>{children}</AuthProtector>
-
-        <aside />
       </section>
     </section>
   );

@@ -1,12 +1,16 @@
 'use client';
 
 import Link16Svg from '@/icons/link-16.svg';
-import DashboardCreateProvider from '../create-provider';
 import CopyField from '@/components/custom/copy-field';
+import { Button } from '@/components/ui/button';
 
-const DashboardSsoIntroduction = () => {
+const DashboardSsoIntroduction = ({
+  onOpenCreateProvider,
+}: {
+  onOpenCreateProvider: () => void;
+}) => {
   return (
-    <div className="w-full h-full rounded-[40px] border border-stroke-default px-[110px] py-[36px]">
+    <div className="mx-[70px]">
       <h2 className="text-text-primary text-xl mb-2">Introduction</h2>
 
       <p className="text-text-secondary text-sm font-normal mb-4">
@@ -38,7 +42,9 @@ const DashboardSsoIntroduction = () => {
               </div>
             </div>
 
-            <DashboardCreateProvider />
+            <Button variant="brand" onClick={() => onOpenCreateProvider()}>
+              <span className="text-text-primary text-base leading-snug">Create a provider</span>
+            </Button>
           </div>
         </div>
 

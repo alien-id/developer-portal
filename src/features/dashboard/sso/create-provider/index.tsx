@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogBody,
@@ -9,8 +8,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from '../../../../components/custom/custom-dialog';
+} from '@/components/custom/custom-dialog';
 import Close16Svg from '@/icons/close-16.svg';
 import {
   Accordion,
@@ -24,7 +22,6 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { CreateProviderRequestPayload } from './types';
 import useSWRMutation from 'swr/mutation';
 import Spinner24Svg from '@/icons/spinner-24.svg';
 import Keyline16Svg from '@/icons/keyline-24.svg';
@@ -40,6 +37,11 @@ import { useAxios } from '@/hooks/useAxios';
 import { useQuery } from 'react-query';
 import QRCodeStyling, { Options } from 'qr-code-styling';
 import Refresh16Svg from '@/icons/refresh-16.svg';
+
+type CreateProviderRequestPayload = {
+  provider_name: string;
+  provider_url: string;
+};
 
 const formSchema = z.object({
   providerName: z.string().min(2, {
@@ -95,9 +97,16 @@ const qrOptions: Partial<Options> = {
   },
 };
 
-const DashboardCreateProvider = () => {
+const DashboardCreateProvider = ({
+  refetch,
+  isOpen,
+  onClose,
+}: {
+  refetch: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const axios = useAxios();
-  const [isDialogOpened, setIsDialogOpened] = useState(false);
   const [accordionCurrent, setAccordionCurrent] = useState('1');
   const [deeplink, setDeeplink] = useState<Deeplink>();
   const [provider, setProvider] = useState<PollResponse>();
@@ -164,7 +173,7 @@ const DashboardCreateProvider = () => {
   }, [qrElementRef.current]);
 
   const handleFinish = () => {
-    setIsDialogOpened(false);
+    onClose();
     mutate();
   };
 
@@ -199,14 +208,15 @@ const DashboardCreateProvider = () => {
 
   useEffect(() => {
     if (pollData?.status === 'created') {
+      refetch();
       setProvider({ ...pollData });
       setAccordionCurrent('3');
     }
-  }, [pollData]);
+  }, [pollData, refetch]);
 
   useEffect(() => {
     onReset();
-  }, [isDialogOpened]);
+  }, [isOpen]);
 
   const onReset = () => {
     form.reset();
@@ -217,13 +227,7 @@ const DashboardCreateProvider = () => {
   };
 
   return (
-    <Dialog open={isDialogOpened} onOpenChange={setIsDialogOpened}>
-      <DialogTrigger asChild>
-        <Button variant="brand">
-          <span className="text-text-primary text-base leading-snug">Create a provider</span>
-        </Button>
-      </DialogTrigger>
-
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[640px] max-h-[90dvh] py-3">
         <DialogHeader>
           <DialogTitle className="text-text-primary text-xl leading-loose">

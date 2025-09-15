@@ -1,35 +1,54 @@
 'use client';
 
-import { Skeleton } from "@/components/ui/skeleton";
-import { DashboardSsoIntroduction, DashboardSsoProvidersList, GetProvidersResponse } from "@/features";
-import { useAxios } from "@/hooks/useAxios";
-import { AxiosError } from "axios";
-import { memo } from "react";
-import useSWR from "swr";
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  DashboardSsoIntroduction,
+  DashboardSsoProvidersList,
+  GetProvidersResponse,
+} from '@/features';
+import { useAxios } from '@/hooks/useAxios';
+import { AxiosError } from 'axios';
+import { memo } from 'react';
+import { useQuery } from 'react-query';
+import { useState, useMemo } from 'react';
+import DashboardCreateProvider from '@/features/dashboard/sso/create-provider';
 
 const DashboardSsoPage = () => {
-    const axios = useAxios();
+  const axios = useAxios();
+  const [isOpen, setIsOpen] = useState(false);
 
-    const providersSwr = useSWR<GetProvidersResponse, AxiosError>(
-        `/providers`,
-        (url: string) => axios.get(url).then(res => res.data),
-        {
-            revalidateOnFocus: false,
-            revalidateIfStale: false,
-            revalidateOnReconnect: false,
-        }
-    );
+  const { data, isLoading, isError, refetch } = useQuery<GetProvidersResponse, AxiosError>({
+    queryKey: ['providers'],
+    queryFn: async () => {
+      const { data } = await axios.get('/providers');
+      return data;
+    },
+  });
 
-    if (providersSwr.error) return null;
+  const content = useMemo(() => {
+    if (isLoading || isError) return;
 
-    if (providersSwr.isLoading) return <Skeleton className="h-full w-full rounded-xl" />;
-
-    if (!providersSwr.data?.providers || providersSwr.data.providers.length === 0) return <DashboardSsoIntroduction />
+    if (!data?.providers || data.providers.length === 0)
+      return <DashboardSsoIntroduction onOpenCreateProvider={() => setIsOpen(true)} />;
 
     return (
-        <DashboardSsoProvidersList data={providersSwr.data.providers} />
-    )
-}
+      <DashboardSsoProvidersList
+        onOpenCreateProvider={() => setIsOpen(true)}
+        data={data.providers}
+      />
+    );
+  }, [data?.providers, isError, isLoading]);
+
+  if (isLoading || isError) return <Skeleton className="h-full w-full rounded-xl" />;
+
+  return (
+    <>
+      <DashboardCreateProvider refetch={refetch} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <div className="w-full h-full rounded-[40px] border border-stroke-default px-[36px] py-[36px]">
+        {content}
+      </div>
+    </>
+  );
+};
 
 export default memo(DashboardSsoPage);
-
