@@ -10,13 +10,14 @@ import { cn } from '@/lib/utils';
 export const Header = () => {
   return (
     <header>
-      <div className="max-w-[1080px] w-full h-[60px] mx-auto px-3 flex flex-row items-center">
+      <div className="max-w-[1080px] w-full h-[60px] mx-auto px-3 flex flex-row items-center justify-between relative">
         <Link href={'/'} className="flex flex-row items-center basis-full">
           <Logo1xWhiteSvg />
         </Link>
 
         <div
           className={cn(
+            'absolute left-[50%] translate-x-[-50%]',
             'basis-full',
             'flex flex-row items-center gap-3 justify-center text-sm text-text-tertiary leading-tight',
             'hidden sm:flex',

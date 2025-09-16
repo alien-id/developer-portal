@@ -15,6 +15,7 @@ import QRCodeStyling from 'qr-code-styling';
 import { Avatar } from '@/components/Avatar';
 
 import { Options } from 'qr-code-styling';
+import Link16Svg from '@/icons/link-16.svg';
 
 const qrOptions: Partial<Options> = {
   data: 'sample',
@@ -94,7 +95,7 @@ const AuthForm = () => {
           <Clear24Svg className="" />
         </div>
 
-        <p className="text-center text-text-primary text-2xl leading-loose mb-4">
+        <p className="text-center text-text-primary text-xl md:text-2xl leading-loose mb-4">
           Authorization failed
         </p>
 
@@ -117,7 +118,7 @@ const AuthForm = () => {
           <Success24Svg />
         </div>
 
-        <p className="text-center text-text-primary text-2xl leading-loose mb-4">
+        <p className="text-center text-text-primary text-xl md:text-2xl leading-6 md:leading-loose mb-4">
           Your Alien ID
           <br />
           authentication was successful
@@ -156,14 +157,14 @@ const AuthForm = () => {
 
   return (
     <div className="h-full w-full grid justify-center place-content-center place-items-center">
-      <p className="text-text-primary text-2xl mb-[40px] text-center">
+      <p className="text-text-primary text-xl md:text-2xl mb-[40px] text-center">
         Scan with Alien App <br />
         to sign in to Developer Portal
       </p>
 
-      <div className="max-w-[340px] max-h-[340px] p-[24px] mb-[40px] rounded-[32px] relative border border-stroke-default">
+      <div className="max-w-[340px] max-h-[340px] p-[24px] mb-4 md:mb-[40px] rounded-[32px] relative border border-stroke-default">
         {isLoading && (
-          <Spinner24Svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin" />
+          <Spinner24Svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin z-10" />
         )}
 
         <div
@@ -175,6 +176,21 @@ const AuthForm = () => {
           )}
         />
       </div>
+
+      {deeplink?.deep_link ? (
+        <div className="md:hidden inline-flex justify-start items-center gap-[3px] mb-4">
+          <a
+            href={deeplink.deep_link}
+            className="text-text-secondary border-b border-white/20"
+            target={'_blank'}
+          >
+            Open in Alien App
+          </a>
+          <div className="w-4 h-4 relative overflow-hidden">
+            <Link16Svg />
+          </div>
+        </div>
+      ) : null}
 
       <div className="max-w-[476px] p-4 bg-bg-secondary rounded-2xl">
         <p className="text-text-secondary text-sm mb-4">What is Alien ID?</p>
@@ -234,18 +250,12 @@ const AuthForm = () => {
       </div>
 
       {deeplink ? (
-        <>
-          <Link href={deeplink.deep_link} className={cn('text-text-secondary text-xs p-1')}>
-            Direct link
-          </Link>
-
-          <button
-            className={cn('text-text-secondary text-xs p-1 cursor-pointer')}
-            onClick={handleMockScan}
-          >
-            Mock scan
-          </button>
-        </>
+        <button
+          className={cn('text-text-secondary text-xs p-1 cursor-pointer')}
+          onClick={handleMockScan}
+        >
+          Mock scan
+        </button>
       ) : null}
     </div>
   );

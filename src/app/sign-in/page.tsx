@@ -10,8 +10,8 @@ const AuthForm = dynamic(() => import('@/components/AuthForm'), { ssr: false });
 
 const SignInPage = () => {
   return (
-    <main className="max-w-[696px] mx-auto my-[18px]">
-      <div className="mb-[30px] flex flex-row items-center relative">
+    <main className="max-w-[696px] min-h-screen w-[90%] mx-auto flex flex-col">
+      <div className="flex-none basis-[60px] mb-[10px] h-[60px] flex flex-row items-center relative">
         <Link
           href="/"
           className="absolute left-0 text-text-secondary flex flex-row gap-3 items-center"
@@ -33,7 +33,7 @@ const SignInPage = () => {
         </div>
       </div>
 
-      <div className="w-full min-w-[696px] min-h-[70vh] mb-[18px] p-[35px] rounded-[40px] border border-stroke-default grid grid-rows-[auto_1fr] place-items-center">
+      <div className="w-full flex flex-col items-center flex-1 p-4 md:p-[35px] rounded-t-[40px] border-b-0 border border-stroke-default">
         <Logo2xGraySvg className="mb-[23px] shrink-0" />
 
         <AuthForm />
