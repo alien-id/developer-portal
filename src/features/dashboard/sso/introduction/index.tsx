@@ -10,7 +10,7 @@ const DashboardSsoIntroduction = ({
   onOpenCreateProvider: () => void;
 }) => {
   return (
-    <div className="mx-[70px]">
+    <div>
       <h2 className="text-text-primary text-xl mb-2">Introduction</h2>
 
       <p className="text-text-secondary text-sm font-normal mb-4">
@@ -19,14 +19,14 @@ const DashboardSsoIntroduction = ({
       </p>
 
       <div className="flex flex-col gap-1">
-        <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
-          <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">1</div>
+        <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled flex flex-row items-start justify-start gap-3">
+          <div className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+            1
           </div>
 
-          <div className="w-96 inline-flex flex-col  items-start gap-4">
-            <div className="flex flex-col  items-start gap-1">
-              <div className="flex flex-col  items-start gap-1">
+          <div className="inline-flex flex-col items-start gap-4">
+            <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1">
                 <div className=" text-text-primary text-sm leading-tight mb-1">
                   Create a new provider
                 </div>
@@ -49,11 +49,11 @@ const DashboardSsoIntroduction = ({
         </div>
 
         <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
-          <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">2</div>
+          <div className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+            2
           </div>
 
-          <div className="w-96 inline-flex flex-col  items-start gap-4">
+          <div className="inline-flex flex-col  items-start gap-4">
             <div className="flex flex-col  items-start gap-1">
               <div className="flex flex-col  items-start gap-1">
                 <div className=" text-text-primary text-sm leading-tight mb-1">
@@ -90,11 +90,11 @@ const DashboardSsoIntroduction = ({
         </div>
 
         <div className="p-4 bg-bg-secondary rounded-2xl border border-stroke-disabled inline-flex flex-row gap-3">
-          <div className="w-5 h-5 relative rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">3</div>
+          <div className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full border border-stroke-default text-neutral-400 text-xs leading-none">
+            3
           </div>
 
-          <div className="w-96 inline-flex flex-col  items-start gap-4">
+          <div className="inline-flex flex-col  items-start gap-4">
             <div className="flex flex-col  items-start gap-1">
               <div className="flex flex-col  items-start gap-1">
                 <div className=" text-text-primary text-sm leading-tight mb-1">

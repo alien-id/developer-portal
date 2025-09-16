@@ -44,9 +44,7 @@ const DashboardSsoPage = () => {
   return (
     <>
       <DashboardCreateProvider refetch={refetch} isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <div className="w-full h-full rounded-[40px] border border-stroke-default px-[36px] py-[36px]">
-        {content}
-      </div>
+      <div className="w-full h-full">{content}</div>
     </>
   );
 };

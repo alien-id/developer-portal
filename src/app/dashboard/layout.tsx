@@ -6,11 +6,13 @@ import { PropsWithChildren } from 'react';
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   return (
-    <section className="w-full h-dvh flex flex-col gap-3">
-      <Header />
+    <section className="min-h-screen w-[90%] max-w-[1080px] mx-auto flex flex-col">
+      <div className="h-[60px] flex-none shrink-0">
+        <Header />
+      </div>
 
-      <section className="max-w-[1080px] w-full h-full mx-auto px-3 pb-3 grid grid-cols-[1fr_696px_1fr] gap-3">
-        <aside className="min-w-[120px]">
+      <section className="w-full min-h-0 flex-1 grid grid-cols-1 grid-rows-[auto_1fr] lg:grid-rows-[1fr] lg:grid-cols-[140px_minmax(0,1fr)_140px] items-stretch gap-3 px-3">
+        <aside className="lg:mt-[36px] min-w-[120px] self-start">
           <div
             className={`mb-4 text-text-secondary text-xs font-medium uppercase leading-none tracking-tight ${robotoMono.className}`}
           >
@@ -34,7 +36,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
           </nav>
         </aside>
 
-        <AuthProtector>{children}</AuthProtector>
+        <div className="lg:max-w-[696px] w-[100%] self-stretch justify-self-center rounded-t-[40px] border-b-0 border border-stroke-default p-[36px]">
+          <AuthProtector>{children}</AuthProtector>
+        </div>
       </section>
     </section>
   );
