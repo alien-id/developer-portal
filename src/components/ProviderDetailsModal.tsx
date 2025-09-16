@@ -40,7 +40,13 @@ export const ProviderDetailsModal = ({
   const [accordionCurrent, setAccordionCurrent] = useState<'1' | '2' | '3' | '4' | '5'>('1');
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        setAccordionCurrent('1');
+        onClose();
+      }}
+    >
       <DialogContent className="w-[640px] max-h-[90dvh] py-3">
         <DialogHeader>
           <DialogTitle className="text-text-primary text-xl leading-loose">
@@ -368,7 +374,10 @@ export const ProviderDetailsModal = ({
                   )}
 
                   <button
-                    onClick={() => onClose()}
+                    onClick={() => {
+                      setAccordionCurrent('1');
+                      onClose();
+                    }}
                     className="px-4 py-2 bg-button-primary-bg-active rounded-full self-start"
                   >
                     <div className="h-6 text-center justify-center text-text-primary text-base leading-snug flex flex-row gap-2 items-center">

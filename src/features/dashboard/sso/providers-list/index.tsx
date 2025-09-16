@@ -126,6 +126,8 @@ const DashboardSsoProvidersList = ({
                 />
               </TableCell>
 
+              <TableCell className="md:min-w-[30px] min-w-[80px]" />
+
               <TableCell
                 className={cn(
                   'min-w-[10px] max-w-[80px]',
