@@ -22,7 +22,6 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import useSWRMutation from 'swr/mutation';
 import Spinner24Svg from '@/icons/spinner-24.svg';
 import Keyline16Svg from '@/icons/keyline-24.svg';
 
@@ -32,9 +31,8 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { codeForButton, codeForClient, codeForServer } from './constants';
 import CopyField from '@/components/custom/copy-field';
 import { cn, formatSecret } from '@/lib/utils';
-import useSWR from 'swr';
 import { useAxios } from '@/hooks/useAxios';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import QRCodeStyling, { Options } from 'qr-code-styling';
 import Refresh16Svg from '@/icons/refresh-16.svg';
 
@@ -127,16 +125,13 @@ const DashboardCreateProvider = ({
     };
   }, [axios]);
 
-  const { mutate } = useSWR(`/providers`);
+  const queryClient = useQueryClient();
 
-  const { trigger, isMutating } = useSWRMutation<
+  const { mutate: trigger, isLoading: isMutating } = useMutation<
     Deeplink,
     Error,
-    string,
     CreateProviderRequestPayload
-  >(`/providers/mutate`, async (url, { arg }: { arg: CreateProviderRequestPayload }) =>
-    createProvider(arg),
-  );
+  >(createProvider);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -152,18 +147,19 @@ const DashboardCreateProvider = ({
       provider_url: values.providerDomainUrl,
     };
 
-    try {
-      const deeplink = await trigger(payload);
+    trigger(payload, {
+      onSuccess: (deeplink) => {
+        setDeeplink(deeplink);
+        setAccordionCurrent('2');
 
-      setDeeplink(deeplink);
-      setAccordionCurrent('2');
-
-      qrInstanceRef.current.update({
-        data: deeplink.deep_link,
-      });
-    } catch (e) {
-      setError(e as string);
-    }
+        qrInstanceRef.current.update({
+          data: deeplink.deep_link,
+        });
+      },
+      onError: (e) => {
+        setError(e instanceof Error ? e.message : String(e));
+      },
+    });
   };
 
   useEffect(() => {
@@ -174,7 +170,7 @@ const DashboardCreateProvider = ({
 
   const handleFinish = () => {
     onClose();
-    mutate();
+    queryClient.invalidateQueries(['/providers']);
   };
 
   const handleMockScan = () => {

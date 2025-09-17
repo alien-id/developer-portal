@@ -1,7 +1,6 @@
 'use client';
 
 import { AlienSsoProvider } from '@alien_org/sso-sdk-react';
-import { SWRConfig } from 'swr';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthVerifier } from '@/components/AuthVerifier';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -18,15 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AlienSsoProvider config={alienSsoSdkClientConfig}>
         <AuthVerifier />
-        <SWRConfig
-          value={{
-            revalidateOnFocus: false,
-            revalidateIfStale: false,
-            revalidateOnReconnect: false,
-          }}
-        >
-          {children}
-        </SWRConfig>
+        {children}
         <Toaster />
       </AlienSsoProvider>
     </QueryClientProvider>
