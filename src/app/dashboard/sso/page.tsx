@@ -9,7 +9,7 @@ import {
 import { useAxios } from '@/hooks/useAxios';
 import { AxiosError } from 'axios';
 import { memo } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import DashboardCreateProvider from '@/features/dashboard/sso/create-provider';
 
@@ -17,7 +17,7 @@ const DashboardSsoPage = () => {
   const axios = useAxios();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data, isLoading, isError, refetch } = useQuery<GetProvidersResponse, AxiosError>({
+  const { data, isPending: isLoading, isError, refetch } = useQuery<GetProvidersResponse, AxiosError>({
     queryKey: ['providers'],
     queryFn: async () => {
       const { data } = await axios.get('/providers');
