@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         brand:
-          'brand-button border bg-zinc-900 rounded-[36px] px-4 py-2 shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] outline-1 outline-offset-[-0.50px] outline-white hover:bg-accent',
+          'brand-button border bg-zinc-900 rounded-[36px] px-4 py-2 shadow-[inset_0px_0px_16px_0px_rgba(46,130,247,1.00)] outline-1 outline-offset-[-0.50px] outline-white hover:bg-accent relative [&>*]:relative [&>*]:z-10',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
