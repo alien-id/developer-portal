@@ -32,7 +32,7 @@ import { codeForButton, codeForClient, codeForServer } from './constants';
 import CopyField from '@/components/custom/copy-field';
 import { cn, formatSecret } from '@/lib/utils';
 import { useAxios } from '@/hooks/useAxios';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import QRCodeStyling, { Options } from 'qr-code-styling';
 import Refresh16Svg from '@/icons/refresh-16.svg';
 
@@ -127,11 +127,9 @@ const DashboardCreateProvider = ({
 
   const queryClient = useQueryClient();
 
-  const { mutate: trigger, isLoading: isMutating } = useMutation<
-    Deeplink,
-    Error,
-    CreateProviderRequestPayload
-  >(createProvider);
+  const { mutate: trigger, isPending: isMutating } = useMutation({
+    mutationFn: createProvider,
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -170,7 +168,7 @@ const DashboardCreateProvider = ({
 
   const handleFinish = () => {
     onClose();
-    queryClient.invalidateQueries(['/providers']);
+    queryClient.invalidateQueries({ queryKey: ['providers'] });
   };
 
   const handleMockScan = () => {
@@ -187,7 +185,7 @@ const DashboardCreateProvider = ({
     });
   };
 
-  const { data: pollData } = useQuery({
+  const { data: pollData, error: pollError } = useQuery({
     queryKey: ['deeplink-poll', deeplink?.polling_code],
     queryFn: async () => {
       const res = await axios.post<PollResponse>('/poll', {
@@ -199,7 +197,6 @@ const DashboardCreateProvider = ({
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
     retry: false,
-    onError: (err) => setError(err as string),
   });
 
   useEffect(() => {
@@ -209,6 +206,12 @@ const DashboardCreateProvider = ({
       setAccordionCurrent('3');
     }
   }, [pollData, refetch]);
+
+  useEffect(() => {
+    if (pollError) {
+      setError(pollError instanceof Error ? pollError.message : String(pollError));
+    }
+  }, [pollError]);
 
   useEffect(() => {
     onReset();
